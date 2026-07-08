@@ -1,5 +1,5 @@
 exports.handler = async function(event, context) {
-  const API_URL = "https://backend4.3k-darts.com/2k-backend4/api/v1/frontend/event/20941/phase/34809/round/0/table";
+  const API_URL = "https://backend4.3k-darts.com/2k-backend4/api/v1/frontend/event/20941/phase/1/round/0/table";
 
   try {
     const response = await fetch(API_URL, {
