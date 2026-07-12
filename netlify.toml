@@ -1,0 +1,13 @@
+[build]
+  functions = "netlify/functions"
+  publish = "."
+
+[[redirects]]
+  from = "/api/table"
+  to = "/.netlify/functions/table"
+  status = 200
+
+[[redirects]]
+  from = "/api/table2"
+  to = "/.netlify/functions/table2"
+  status = 200
