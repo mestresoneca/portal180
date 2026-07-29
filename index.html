@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal 180 · Darts Portugal</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2311151C' stroke='%23FF3B30' stroke-width='6'/%3E%3Ccircle cx='50' cy='50' r='14' fill='%23FF3B30'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0E1117;--bg-card:#161B25;--bg-card2:#1C2333;--ink:#F5F6FA;--muted:#8B95A8;--line:#252D3D;--accent:#FF3B30;--gold:#F5C842;--radius:14px;--shadow:0 2px 4px rgba(0,0,0,.3),0 12px 32px rgba(0,0,0,.4);}
+  *{box-sizing:border-box;}html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
+  ::selection{background:var(--accent);color:#fff;}
+
+  /* HEADER */
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:0 28px;background:rgba(14,17,23,.95);height:64px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100;backdrop-filter:blur(10px);}
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand-mark{width:36px;height:36px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;}
+  .brand-mark svg{width:20px;height:20px;}
+  .brand-text strong{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px;letter-spacing:.01em;text-transform:uppercase;color:var(--ink);display:block;line-height:1;}
+  .brand-text span{font-size:11px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;}
+  .lang-select{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;padding:7px 26px 7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg-card);color:var(--ink);cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%238B95A8' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 6px center;}
+  .lang-select option{background:var(--bg-card);}
+
+  /* HERO */
+  .hero{padding:70px 28px 60px;text-align:center;position:relative;overflow:hidden;}
+  .hero::before{content:"";position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse at center,rgba(255,59,48,.12) 0%,transparent 70%);pointer-events:none;}
+  .hero-logo{margin:0 auto 28px;position:relative;}
+  .hero-logo svg{width:100px;height:100px;filter:drop-shadow(0 0 20px rgba(255,59,48,.3));}
+  .hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:64px;text-transform:uppercase;letter-spacing:.01em;line-height:.9;margin:0 0 8px;color:var(--ink);}
+  .hero h1 em{font-style:normal;color:var(--accent);}
+  .hero-sub{font-size:16px;color:var(--muted);margin:0 0 52px;letter-spacing:.01em;}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--bg-card);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin-bottom:52px;}
+  .hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 1.8s ease-out infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,59,48,.5);}70%{box-shadow:0 0 0 6px rgba(255,59,48,0);}100%{box-shadow:0 0 0 0 rgba(255,59,48,0);}}
+
+  /* ASSOCIATIONS */
+  .section{max-width:900px;margin:0 auto;padding:0 24px 70px;}
+  .section-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 18px;display:flex;align-items:center;gap:12px;}
+  .section-label::after{content:"";flex:1;height:1px;background:var(--line);}
+  .assoc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:580px){.assoc-grid{grid-template-columns:1fr;}}
+
+  .assoc-card{display:flex;flex-direction:column;gap:16px;padding:28px;border-radius:var(--radius);background:var(--bg-card);border:1px solid var(--line);box-shadow:var(--shadow);text-decoration:none;color:var(--ink);transition:transform .15s,box-shadow .15s,border-color .15s;position:relative;overflow:hidden;}
+  .assoc-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;}
+  .assoc-card.aszo::before{background:linear-gradient(90deg,#003F2D,#00A86B);}
+  .assoc-card.asl::before{background:linear-gradient(90deg,#1a237e,#5C6BC0);}
+  .assoc-card.soon{opacity:.5;pointer-events:none;cursor:default;}
+  .assoc-card:not(.soon):hover{transform:translateY(-3px);box-shadow:0 4px 8px rgba(0,0,0,.3),0 20px 48px rgba(0,0,0,.5);border-color:rgba(255,255,255,.12);}
+
+  .assoc-top{display:flex;align-items:center;justify-content:space-between;}
+  .assoc-logo{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:16px;color:#fff;flex-shrink:0;}
+  .aszo .assoc-logo{background:linear-gradient(135deg,#003F2D,#005C42);}
+  .asl .assoc-logo{background:linear-gradient(135deg,#1a237e,#283593);}
+  .soon-badge{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--bg-card2);border:1px solid var(--line);border-radius:999px;padding:4px 9px;}
+  .assoc-card h2{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:26px;text-transform:uppercase;letter-spacing:.01em;margin:0;color:var(--ink);}
+  .assoc-card p{font-size:13px;color:var(--muted);margin:0;line-height:1.5;}
+  .assoc-divs{display:flex;gap:6px;flex-wrap:wrap;}
+  .div-chip{font-size:11px;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--bg-card2);border:1px solid var(--line);color:var(--muted);}
+  .assoc-cta{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-top:auto;}
+  .aszo .assoc-cta{color:#00A86B;}
+  .asl .assoc-cta{color:#5C6BC0;}
+
+  footer{padding:24px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);}
+  @media(max-width:600px){.hero h1{font-size:44px;}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="10" stroke="white" stroke-width="1.5" opacity=".4"/>
+        <circle cx="12" cy="12" r="6" fill="white" opacity=".6"/>
+        <circle cx="12" cy="12" r="2.5" fill="white"/>
+        <line x1="12" y1="2" x2="12" y2="9.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="brand-text">
+      <strong>Portal 180</strong>
+      <span data-i18n="tagline">Darts Portugal</span>
+    </div>
+  </div>
+  <select class="lang-select" id="lang-select">
+    <option value="pt">🇵🇹 PT</option>
+    <option value="en">🇬🇧 EN</option>
+    <option value="es">🇪🇸 ES</option>
+  </select>
+</header>
+
+<div class="hero">
+  <div class="hero-logo">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="46" fill="#11151C" stroke="#FF3B30" stroke-width="4"/>
+      <circle cx="50" cy="50" r="36" fill="none" stroke="#252D3D" stroke-width="2"/>
+      <circle cx="50" cy="50" r="26" fill="#C8102E" opacity=".8"/>
+      <circle cx="50" cy="50" r="16" fill="#fff" opacity=".9"/>
+      <circle cx="50" cy="50" r="8" fill="#C8102E"/>
+      <circle cx="50" cy="50" r="3" fill="#F5C842"/>
+      <line x1="50" y1="4" x2="50" y2="42" stroke="#F5C842" stroke-width="2.5" stroke-linecap="round"/>
+      <polygon points="50,4 46,14 54,14" fill="#F5C842"/>
+    </svg>
+  </div>
+  <h1>Portal <em>180</em></h1>
+  <p class="hero-sub" data-i18n="heroSub">Classificações de Setas em Portugal</p>
+  <div class="hero-badge"><span class="dot"></span><span data-i18n="liveData">Dados em tempo real</span></div>
+</div>
+
+<div class="section">
+  <p class="section-label" data-i18n="assocLabel">Associações</p>
+  <div class="assoc-grid">
+
+    <a class="assoc-card aszo" href="aszo.html">
+      <div class="assoc-top">
+        <div class="assoc-logo">ASZO</div>
+      </div>
+      <h2 data-i18n="aszoName">Zona Oeste</h2>
+      <p data-i18n="aszoDesc">Associação de Setas da Zona Oeste</p>
+      <div class="assoc-divs">
+        <span class="div-chip" data-i18n="div1chip">1ª Divisão</span>
+        <span class="div-chip" data-i18n="div2chip">2ª Divisão</span>
+      </div>
+      <span class="assoc-cta" data-i18n="viewAssoc">Ver classificações →</span>
+    </a>
+
+    <a class="assoc-card asl" href="asl.html">
+      <div class="assoc-top">
+        <div class="assoc-logo">ASL</div>
+      </div>
+      <h2 data-i18n="aslName">Lisboa</h2>
+      <p data-i18n="aslDesc">Associação de Setas de Lisboa</p>
+      <div class="assoc-divs">
+        <span class="div-chip" data-i18n="div1chip">1ª Divisão</span>
+        <span class="div-chip" data-i18n="div2achip">2ª Div. A</span>
+        <span class="div-chip" data-i18n="div2bchip">2ª Div. B</span>
+        <span class="div-chip" data-i18n="div1fchip">Feminina</span>
+      </div>
+      <span class="assoc-cta" data-i18n="viewAssoc">Ver classificações →</span>
+    </a>
+
+  </div>
+</div>
+
+<footer>
+  <span data-i18n="footerNote">Portal 180 · Classificações de Setas em Portugal · 2025/2026</span>
+  <span style="opacity:.5;">Dados via 2K Dart Software</span>
+</footer>
+
+<script>
+(function(){
+"use strict";
+var I18N = {
+  pt:{tagline:"Darts Portugal",heroSub:"Classificações de Setas em Portugal",liveData:"Dados em tempo real",assocLabel:"Associações",aszoName:"Zona Oeste",aszoDesc:"Associação de Setas da Zona Oeste",aslName:"Lisboa",aslDesc:"Associação de Setas de Lisboa",div1chip:"1ª Divisão",div2chip:"2ª Divisão",div2achip:"2ª Div. A",div2bchip:"2ª Div. B",div1fchip:"Feminina",viewAssoc:"Ver classificações →",footerNote:"Portal 180 · Classificações de Setas em Portugal · 2025/2026"},
+  en:{tagline:"Darts Portugal",heroSub:"Darts Standings in Portugal",liveData:"Live data",assocLabel:"Associations",aszoName:"Zona Oeste",aszoDesc:"Associação de Setas da Zona Oeste",aslName:"Lisbon",aslDesc:"Associação de Setas de Lisboa",div1chip:"1st Division",div2chip:"2nd Division",div2achip:"2nd Div. A",div2bchip:"2nd Div. B",div1fchip:"Women",viewAssoc:"View standings →",footerNote:"Portal 180 · Darts Standings in Portugal · 2025/2026"},
+  es:{tagline:"Darts Portugal",heroSub:"Clasificaciones de Dardos en Portugal",liveData:"Datos en tiempo real",assocLabel:"Asociaciones",aszoName:"Zona Oeste",aszoDesc:"Associação de Setas da Zona Oeste",aslName:"Lisboa",aslDesc:"Associação de Setas de Lisboa",div1chip:"1ª División",div2chip:"2ª División",div2achip:"2ª Div. A",div2bchip:"2ª Div. B",div1fchip:"Femenina",viewAssoc:"Ver clasificaciones →",footerNote:"Portal 180 · Clasificaciones de Dardos en Portugal · 2025/2026"}
+};
+var lang = "pt";
+function apply(){
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-i18n]").forEach(function(el){
+    el.textContent = (I18N[lang]||I18N.pt)[el.getAttribute("data-i18n")] || el.textContent;
+  });
+}
+document.getElementById("lang-select").addEventListener("change", function(){ lang=this.value; apply(); });
+apply();
+})();
+</script>
+</body>
+</html>
