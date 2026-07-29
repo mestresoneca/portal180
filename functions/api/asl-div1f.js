@@ -1,0 +1,33 @@
+export async function onRequest(context) {
+  const API_URL = "https://backend4.3k-darts.com/2k-backend4/api/v1/frontend/event/26511/phase/0/round/0/table";
+  try {
+    const response = await fetch(API_URL, {
+      method: "GET",
+      headers: {
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "en",
+        "Origin": "https://portal.3k-darts.com",
+        "Referer": "https://portal.3k-darts.com/",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+        "Mandant-Key": "3060",
+        "Saison-Id": "136",
+        "Mandant-Database": "5"
+      }
+    });
+    if (!response.ok) throw new Error("HTTP " + response.status);
+    const data = await response.json();
+    return new Response(JSON.stringify(data), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "no-cache, no-store"
+      }
+    });
+  } catch(err) {
+    return new Response(JSON.stringify({error: err.message}), {
+      status: 500,
+      headers: {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}
+    });
+  }
+}
