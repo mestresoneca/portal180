@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal 180 · Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#0D0F12;--bg2:#13161B;--bg3:#1A1E26;--line:#252A35;--line2:#2E3440;
+  --ink:#F0F2F5;--ink2:#B8C0CC;--ink3:#7A8494;--red:#E8192C;--green:#22C55E;
+  --radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
+
+/* LOGIN */
+.login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
+.login-box{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:40px;width:100%;max-width:380px;text-align:center;}
+.login-logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:32px;margin-bottom:6px;}
+.login-logo em{font-style:normal;color:var(--red);}
+.login-sub{font-size:13px;color:var(--ink3);margin-bottom:28px;}
+.field{margin-bottom:14px;text-align:left;}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink3);margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase;}
+.field input{width:100%;background:var(--bg3);border:1px solid var(--line);border-radius:8px;padding:10px 14px;color:var(--ink);font-size:14px;font-family:'Inter',sans-serif;transition:border-color .15s;}
+.field input:focus{outline:none;border-color:var(--red);}
+.btn{width:100%;padding:11px;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s;}
+.btn-red{background:var(--red);color:#fff;}
+.btn-red:hover{background:#C01020;}
+.btn-gray{background:var(--bg3);color:var(--ink2);border:1px solid var(--line);}
+.btn-gray:hover{background:var(--line);}
+.msg{font-size:13px;margin-top:12px;padding:10px;border-radius:8px;}
+.msg.err{background:rgba(232,25,44,.12);color:#ff6b75;border:1px solid rgba(232,25,44,.2);}
+.msg.ok{background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.2);}
+
+/* ADMIN LAYOUT */
+.admin{display:none;min-height:100vh;}
+.admin-header{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;background:var(--bg2);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10;}
+.admin-logo{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:22px;}
+.admin-logo em{font-style:normal;color:var(--red);}
+.admin-logo span{font-size:13px;font-weight:500;color:var(--ink3);margin-left:8px;}
+.admin-user{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink3);}
+.btn-sm{padding:6px 14px;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;}
+.btn-sm-red{background:var(--red);color:#fff;}
+.btn-sm-gray{background:var(--bg3);color:var(--ink2);border:1px solid var(--line);}
+.btn-sm-green{background:#166534;color:#4ade80;border:1px solid #166534;}
+
+.admin-body{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 56px);}
+@media(max-width:768px){.admin-body{grid-template-columns:1fr;}}
+
+/* SIDEBAR */
+.admin-sidebar{background:var(--bg2);border-right:1px solid var(--line);padding:16px;}
+.sidebar-section{margin-bottom:6px;}
+.sidebar-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);padding:8px 10px 4px;}
+.sidebar-btn{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;border:none;background:transparent;color:var(--ink2);font-size:13px;font-weight:500;cursor:pointer;border-radius:7px;transition:all .12s;text-align:left;}
+.sidebar-btn:hover{background:var(--bg3);color:var(--ink);}
+.sidebar-btn.active{background:rgba(232,25,44,.12);color:var(--red);}
+.sidebar-btn svg{width:15px;height:15px;flex-shrink:0;}
+.sidebar-count{margin-left:auto;font-size:11px;font-weight:700;background:var(--bg3);border-radius:999px;padding:2px 7px;color:var(--ink3);}
+
+/* CONTENT AREA */
+.admin-content{padding:24px;overflow-y:auto;}
+
+/* LIST VIEW */
+.view{display:none;}
+.view.active{display:block;}
+.view-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap;}
+.view-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:24px;text-transform:uppercase;}
+.news-list{display:flex;flex-direction:column;gap:10px;}
+.news-item{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:flex;align-items:center;gap:14px;transition:border-color .15s;}
+.news-item:hover{border-color:var(--line2);}
+.news-item-info{flex:1;min-width:0;}
+.news-item-title{font-weight:600;font-size:14px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.news-item-meta{font-size:12px;color:var(--ink3);display:flex;gap:10px;}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;letter-spacing:.04em;}
+.badge-pub{background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.2);}
+.badge-draft{background:rgba(122,132,148,.12);color:var(--ink3);border:1px solid var(--line);}
+.badge-cat{background:rgba(232,25,44,.1);color:#ff6b75;}
+.news-item-actions{display:flex;gap:6px;flex-shrink:0;}
+
+/* EDITOR */
+.editor-grid{display:grid;grid-template-columns:1fr 280px;gap:20px;align-items:start;}
+@media(max-width:900px){.editor-grid{grid-template-columns:1fr;}}
+.form-group{margin-bottom:16px;}
+.form-label{display:block;font-size:12px;font-weight:600;color:var(--ink3);margin-bottom:7px;letter-spacing:.04em;text-transform:uppercase;}
+.form-input{width:100%;background:var(--bg3);border:1px solid var(--line);border-radius:8px;padding:10px 14px;color:var(--ink);font-size:14px;font-family:'Inter',sans-serif;transition:border-color .15s;}
+.form-input:focus{outline:none;border-color:var(--red);}
+.form-select{width:100%;background:var(--bg3);border:1px solid var(--line);border-radius:8px;padding:10px 14px;color:var(--ink);font-size:14px;font-family:'Inter',sans-serif;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%237A8494' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;}
+.form-select:focus{outline:none;border-color:var(--red);}
+
+/* RICH TEXT EDITOR */
+.editor-toolbar{display:flex;flex-wrap:wrap;gap:4px;padding:8px;background:var(--bg3);border:1px solid var(--line);border-bottom:none;border-radius:8px 8px 0 0;}
+.toolbar-btn{background:transparent;border:none;color:var(--ink2);padding:5px 8px;border-radius:5px;cursor:pointer;font-size:13px;font-weight:600;transition:all .12s;min-width:28px;text-align:center;}
+.toolbar-btn:hover{background:var(--line);color:var(--ink);}
+.toolbar-btn.active{background:var(--red);color:#fff;}
+.toolbar-sep{width:1px;background:var(--line);margin:2px 4px;align-self:stretch;}
+#editor{
+  min-height:320px;background:var(--bg3);border:1px solid var(--line);
+  border-radius:0 0 8px 8px;padding:14px;color:var(--ink);font-size:14px;
+  line-height:1.7;outline:none;
+}
+#editor:empty::before{content:"Escreve o conteúdo da notícia aqui...";color:var(--ink3);}
+#editor h2{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;margin:12px 0 6px;}
+#editor h3{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;margin:10px 0 4px;}
+#editor p{margin-bottom:10px;}
+#editor ul,#editor ol{margin:0 0 10px 20px;}
+#editor strong{font-weight:700;}
+#editor em{font-style:italic;}
+#editor blockquote{border-left:3px solid var(--red);padding-left:14px;color:var(--ink2);margin:10px 0;}
+
+/* EDITOR SIDEBAR */
+.editor-side{display:flex;flex-direction:column;gap:14px;}
+.side-box{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:16px;}
+.side-box-title{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;}
+.publish-btn{width:100%;padding:11px;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;background:var(--green);color:#fff;margin-bottom:8px;transition:background .15s;}
+.publish-btn:hover{background:#16a34a;}
+.draft-btn{width:100%;padding:11px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;background:transparent;color:var(--ink2);transition:all .15s;}
+.draft-btn:hover{background:var(--bg3);}
+.delete-btn{width:100%;padding:8px;border:1px solid rgba(232,25,44,.3);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:transparent;color:var(--red);margin-top:6px;transition:all .15s;}
+.delete-btn:hover{background:rgba(232,25,44,.1);}
+.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;}
+.img-preview{width:100%;height:120px;object-fit:cover;border-radius:6px;margin-top:8px;display:none;}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:48px 24px;color:var(--ink3);}
+.empty-state svg{width:48px;height:48px;margin:0 auto 14px;opacity:.3;}
+.empty-state h3{font-size:16px;font-weight:600;margin-bottom:6px;color:var(--ink2);}
+.empty-state p{font-size:13px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px 18px;font-size:13px;font-weight:500;z-index:1000;transform:translateY(80px);opacity:0;transition:all .3s;display:flex;align-items:center;gap:8px;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.ok{border-color:rgba(34,197,94,.3);color:#4ade80;}
+.toast.err{border-color:rgba(232,25,44,.3);color:#ff6b75;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">Portal <em>180</em></div>
+    <div class="login-sub">Painel de Administração</div>
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="o-teu@email.com">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="login-pass" placeholder="••••••••">
+    </div>
+    <button class="btn btn-red" id="login-btn">Entrar</button>
+    <div id="login-msg"></div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin" id="admin-panel">
+  <header class="admin-header">
+    <div class="admin-logo">Portal <em>180</em> <span>Admin</span></div>
+    <div class="admin-user">
+      <span id="admin-email-label"></span>
+      <button class="btn-sm btn-sm-gray" id="logout-btn">Sair</button>
+    </div>
+  </header>
+  <div class="admin-body">
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Notícias</div>
+        <button class="sidebar-btn active" onclick="showView('list')" id="sb-list">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          Todas as Notícias
+          <span class="sidebar-count" id="count-total">0</span>
+        </button>
+        <button class="sidebar-btn" onclick="newArticle()" id="sb-new">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nova Notícia
+        </button>
+      </div>
+      <div class="sidebar-section" style="margin-top:16px;">
+        <div class="sidebar-label">Site</div>
+        <a class="sidebar-btn" href="index.html" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Ver Portal
+        </a>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="admin-content">
+
+      <!-- LIST VIEW -->
+      <div class="view active" id="view-list">
+        <div class="view-head">
+          <h1 class="view-title">Notícias</h1>
+          <button class="btn-sm btn-sm-red" onclick="newArticle()">+ Nova Notícia</button>
+        </div>
+        <div class="news-list" id="news-list">
+          <div class="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <h3>Ainda sem notícias</h3>
+            <p>Clica em "Nova Notícia" para começar</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- EDITOR VIEW -->
+      <div class="view" id="view-editor">
+        <div class="view-head">
+          <h1 class="view-title" id="editor-title">Nova Notícia</h1>
+          <button class="btn-sm btn-sm-gray" onclick="showView('list')">← Voltar</button>
+        </div>
+        <div class="editor-grid">
+          <div>
+            <div class="form-group">
+              <label class="form-label">Título</label>
+              <input class="form-input" type="text" id="f-titulo" placeholder="Título da notícia...">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Resumo (para os cards)</label>
+              <textarea class="form-input" id="f-excerpt" rows="2" placeholder="Breve descrição que aparece nos cards de notícias..." style="resize:vertical;"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Conteúdo</label>
+              <div class="editor-toolbar">
+                <button class="toolbar-btn" onclick="fmt('bold')" title="Negrito"><b>N</b></button>
+                <button class="toolbar-btn" onclick="fmt('italic')" title="Itálico"><i>I</i></button>
+                <button class="toolbar-btn" onclick="fmt('underline')" title="Sublinhado"><u>S</u></button>
+                <div class="toolbar-sep"></div>
+                <button class="toolbar-btn" onclick="fmtBlock('h2')" title="Título grande">H2</button>
+                <button class="toolbar-btn" onclick="fmtBlock('h3')" title="Título médio">H3</button>
+                <div class="toolbar-sep"></div>
+                <button class="toolbar-btn" onclick="fmt('insertUnorderedList')" title="Lista">☰</button>
+                <button class="toolbar-btn" onclick="fmt('insertOrderedList')" title="Lista numerada">1.</button>
+                <div class="toolbar-sep"></div>
+                <button class="toolbar-btn" onclick="fmtBlock('blockquote')" title="Citação">"</button>
+              </div>
+              <div id="editor" contenteditable="true"></div>
+            </div>
+          </div>
+          <div class="editor-side">
+            <div class="side-box">
+              <div class="side-box-title">Publicar</div>
+              <button class="publish-btn" id="publish-btn" onclick="saveArticle(true)">✓ Publicar</button>
+              <button class="draft-btn" onclick="saveArticle(false)">Guardar Rascunho</button>
+              <button class="delete-btn" id="delete-btn" onclick="deleteArticle()" style="display:none;">Eliminar notícia</button>
+              <div style="margin-top:12px;font-size:12px;color:var(--ink3);display:flex;align-items:center;">
+                <span class="status-dot" id="status-dot" style="background:var(--ink3);"></span>
+                <span id="status-label">Rascunho</span>
+              </div>
+            </div>
+            <div class="side-box">
+              <div class="side-box-title">Detalhes</div>
+              <div class="form-group">
+                <label class="form-label">Categoria</label>
+                <select class="form-select" id="f-categoria">
+                  <option value="Nacionais">Nacionais</option>
+                  <option value="Internacionais">Internacionais</option>
+                  <option value="Equipas">Equipas</option>
+                  <option value="Individuais">Individuais</option>
+                  <option value="Associações">Associações</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Autor</label>
+                <input class="form-input" type="text" id="f-autor" value="Portal 180">
+              </div>
+            </div>
+            <div class="side-box">
+              <div class="side-box-title">Imagem de Capa</div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">URL da Imagem</label>
+                <input class="form-input" type="url" id="f-imagem" placeholder="https://..." oninput="previewImg()">
+                <img id="img-preview" class="img-preview" alt="Preview">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const SUPABASE_URL = "https://rqqytfrcnavexinmgbhu.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJxcXl0ZnJjbmF2ZXhpbm1nYmh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU0NzE5MTEsImV4cCI6MjEwMTA0NzkxMX0.4yY0PHxtjn631DXZyZyvmklEXM8fRYwiB8ENDOWEjEE";
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentId = null;
+let articles = [];
+
+// ── AUTH ──────────────────────────────────────────
+document.getElementById("login-btn").addEventListener("click", async () => {
+  const email = document.getElementById("login-email").value.trim();
+  const pass = document.getElementById("login-pass").value;
+  const msg = document.getElementById("login-msg");
+  if(!email || !pass){ msg.innerHTML='<div class="msg err">Preenche os dois campos.</div>'; return; }
+  msg.innerHTML = '<div class="msg">A entrar...</div>';
+  const { error } = await db.auth.signInWithPassword({ email, password: pass });
+  if(error){ msg.innerHTML='<div class="msg err">Email ou password incorretos.</div>'; return; }
+  initAdmin();
+});
+
+document.getElementById("login-pass").addEventListener("keydown", e => {
+  if(e.key === "Enter") document.getElementById("login-btn").click();
+});
+
+document.getElementById("logout-btn").addEventListener("click", async () => {
+  await db.auth.signOut();
+  document.getElementById("admin-panel").style.display = "none";
+  document.getElementById("login-screen").style.display = "flex";
+});
+
+async function checkSession(){
+  const { data: { session } } = await db.auth.getSession();
+  if(session) initAdmin();
+}
+
+async function initAdmin(){
+  const { data: { user } } = await db.auth.getUser();
+  document.getElementById("login-screen").style.display = "none";
+  document.getElementById("admin-panel").style.display = "block";
+  document.getElementById("admin-email-label").textContent = user.email;
+  loadArticles();
+}
+
+// ── ARTICLES ──────────────────────────────────────
+async function loadArticles(){
+  const { data, error } = await db.from("noticias").select("*").order("criado_em", { ascending: false });
+  if(error){ toast("Erro ao carregar notícias", "err"); return; }
+  articles = data || [];
+  document.getElementById("count-total").textContent = articles.length;
+  renderList();
+}
+
+function renderList(){
+  const list = document.getElementById("news-list");
+  if(!articles.length){
+    list.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><h3>Ainda sem notícias</h3><p>Clica em "Nova Notícia" para começar</p></div>';
+    return;
+  }
+  list.innerHTML = articles.map(a => `
+    <div class="news-item">
+      <div class="news-item-info">
+        <div class="news-item-title">${a.titulo}</div>
+        <div class="news-item-meta">
+          <span class="badge ${a.publicado ? 'badge-pub' : 'badge-draft'}">${a.publicado ? 'Publicado' : 'Rascunho'}</span>
+          <span class="badge badge-cat">${a.categoria}</span>
+          <span>${new Date(a.criado_em).toLocaleDateString('pt-PT')}</span>
+        </div>
+      </div>
+      <div class="news-item-actions">
+        <button class="btn-sm btn-sm-gray" onclick="editArticle(${a.id})">Editar</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function newArticle(){
+  currentId = null;
+  document.getElementById("f-titulo").value = "";
+  document.getElementById("f-excerpt").value = "";
+  document.getElementById("f-autor").value = "Portal 180";
+  document.getElementById("f-categoria").value = "Nacionais";
+  document.getElementById("f-imagem").value = "";
+  document.getElementById("editor").innerHTML = "";
+  document.getElementById("img-preview").style.display = "none";
+  document.getElementById("editor-title").textContent = "Nova Notícia";
+  document.getElementById("delete-btn").style.display = "none";
+  updateStatus(false);
+  showView("editor");
+}
+
+function editArticle(id){
+  const a = articles.find(x => x.id === id);
+  if(!a) return;
+  currentId = id;
+  document.getElementById("f-titulo").value = a.titulo || "";
+  document.getElementById("f-excerpt").value = a.excerpt || "";
+  document.getElementById("f-autor").value = a.autor || "Portal 180";
+  document.getElementById("f-categoria").value = a.categoria || "Nacionais";
+  document.getElementById("f-imagem").value = a.imagem_url || "";
+  document.getElementById("editor").innerHTML = a.conteudo || "";
+  document.getElementById("editor-title").textContent = "Editar Notícia";
+  document.getElementById("delete-btn").style.display = "block";
+  updateStatus(a.publicado);
+  previewImg();
+  showView("editor");
+}
+
+function generateSlug(title){
+  return title.toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .substring(0, 80) + "-" + Date.now().toString(36);
+}
+
+async function saveArticle(publish){
+  const titulo = document.getElementById("f-titulo").value.trim();
+  if(!titulo){ toast("O título é obrigatório.", "err"); return; }
+  const conteudo = document.getElementById("editor").innerHTML.trim();
+  if(!conteudo){ toast("O conteúdo não pode estar vazio.", "err"); return; }
+
+  const payload = {
+    titulo,
+    excerpt: document.getElementById("f-excerpt").value.trim(),
+    conteudo,
+    autor: document.getElementById("f-autor").value.trim() || "Portal 180",
+    categoria: document.getElementById("f-categoria").value,
+    imagem_url: document.getElementById("f-imagem").value.trim() || null,
+    publicado: publish,
+    publicado_em: publish ? new Date().toISOString() : null
+  };
+
+  let error;
+  if(currentId){
+    const res = await db.from("noticias").update(payload).eq("id", currentId);
+    error = res.error;
+  } else {
+    payload.slug = generateSlug(titulo);
+    const res = await db.from("noticias").insert([payload]);
+    error = res.error;
+  }
+
+  if(error){ toast("Erro ao guardar: " + error.message, "err"); return; }
+  toast(publish ? "Notícia publicada!" : "Rascunho guardado!", "ok");
+  updateStatus(publish);
+  await loadArticles();
+}
+
+async function deleteArticle(){
+  if(!currentId) return;
+  if(!confirm("Tens a certeza que queres eliminar esta notícia?")) return;
+  const { error } = await db.from("noticias").delete().eq("id", currentId);
+  if(error){ toast("Erro ao eliminar.", "err"); return; }
+  toast("Notícia eliminada.", "ok");
+  await loadArticles();
+  showView("list");
+}
+
+// ── UI ────────────────────────────────────────────
+function showView(v){
+  document.querySelectorAll(".view").forEach(el => el.classList.remove("active"));
+  document.getElementById("view-" + v).classList.add("active");
+  document.querySelectorAll(".sidebar-btn").forEach(el => el.classList.remove("active"));
+  if(v === "list") document.getElementById("sb-list").classList.add("active");
+  if(v === "editor") document.getElementById("sb-new").classList.add("active");
+}
+
+function updateStatus(pub){
+  document.getElementById("status-dot").style.background = pub ? "#22C55E" : "var(--ink3)";
+  document.getElementById("status-label").textContent = pub ? "Publicado" : "Rascunho";
+  document.getElementById("publish-btn").textContent = pub ? "✓ Publicado" : "✓ Publicar";
+}
+
+function previewImg(){
+  const url = document.getElementById("f-imagem").value.trim();
+  const prev = document.getElementById("img-preview");
+  if(url){ prev.src = url; prev.style.display = "block"; }
+  else { prev.style.display = "none"; }
+}
+
+function fmt(cmd){ document.execCommand(cmd, false, null); document.getElementById("editor").focus(); }
+function fmtBlock(tag){ document.execCommand("formatBlock", false, "<"+tag+">"); document.getElementById("editor").focus(); }
+
+function toast(msg, type){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = "toast " + (type||"ok");
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 3000);
+}
+
+checkSession();
+</script>
+</body>
+</html>
