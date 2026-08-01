@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal 180 · O Portal das Setas</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23111' stroke='%23E8192C' stroke-width='6'/%3E%3Ccircle cx='50' cy='50' r='14' fill='%23E8192C'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0D0F12;
+  --bg2:      #13161B;
+  --bg3:      #1A1E26;
+  --bg4:      #22273200;
+  --line:     #252A35;
+  --line2:    #2E3440;
+  --ink:      #F0F2F5;
+  --ink2:     #B8C0CC;
+  --ink3:     #7A8494;
+  --red:      #E8192C;
+  --red-dark: #C01020;
+  --red-glow: rgba(232,25,44,.18);
+  --gold:     #F5C842;
+  --radius:   10px;
+  --shadow:   0 2px 8px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}
+img{display:block;max-width:100%;}
+::selection{background:var(--red);color:#fff;}
+
+/* ─── TOPBAR ─────────────────────────────────────── */
+.topbar {
+  background:var(--bg2);border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:16px;padding:0 24px;height:44px;
+  font-size:12px;color:var(--ink3);
+}
+.topbar-left{display:flex;align-items:center;gap:16px;flex:1;}
+.topbar-date{font-family:'IBM Plex Mono',monospace;font-size:11px;}
+.topbar-sep{width:1px;height:14px;background:var(--line2);}
+.topbar-link{color:var(--ink3);transition:color .15s;}
+.topbar-link:hover{color:var(--ink);}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.live-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--red-glow);border:1px solid rgba(232,25,44,.35);
+  border-radius:999px;padding:4px 10px;
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:500;
+  color:var(--red);letter-spacing:.05em;text-transform:uppercase;
+}
+.live-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:blink 1.4s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.lang-sel{
+  background:transparent;border:none;color:var(--ink3);font-size:12px;
+  cursor:pointer;font-family:'Inter',sans-serif;
+}
+.lang-sel:focus{outline:none;}
+.btn-entrar{
+  background:var(--red);color:#fff;border:none;border-radius:6px;
+  padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer;
+  letter-spacing:.02em;transition:background .15s;
+}
+.btn-entrar:hover{background:var(--red-dark);}
+
+/* ─── HEADER / NAV ───────────────────────────────── */
+.header{
+  background:var(--bg2);border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:100;
+}
+.nav-main{
+  display:flex;align-items:center;gap:0;padding:0 24px;height:56px;
+  max-width:1280px;margin:0 auto;
+}
+.logo{
+  display:flex;align-items:center;gap:10px;margin-right:32px;flex-shrink:0;
+}
+.logo-icon{
+  width:36px;height:36px;border-radius:9px;background:var(--red);
+  display:flex;align-items:center;justify-content:center;
+}
+.logo-icon svg{width:22px;height:22px;}
+.logo-text{
+  font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:26px;
+  text-transform:uppercase;letter-spacing:.01em;line-height:1;
+}
+.logo-text em{font-style:normal;color:var(--red);}
+.logo-tagline{font-size:9px;color:var(--ink3);letter-spacing:.06em;text-transform:uppercase;margin-top:1px;}
+
+.nav-links{display:flex;align-items:stretch;gap:0;flex:1;}
+.nav-link{
+  display:flex;align-items:center;padding:0 14px;height:56px;
+  font-size:13px;font-weight:600;color:var(--ink3);letter-spacing:.02em;
+  border-bottom:3px solid transparent;transition:color .15s,border-color .15s;
+  white-space:nowrap;position:relative;
+}
+.nav-link:hover{color:var(--ink);border-bottom-color:rgba(232,25,44,.4);}
+.nav-link.active{color:var(--ink);border-bottom-color:var(--red);}
+.nav-link svg{width:13px;height:13px;margin-left:4px;opacity:.6;}
+
+.nav-search{
+  display:flex;align-items:center;gap:8px;background:var(--bg3);
+  border:1px solid var(--line);border-radius:8px;padding:0 12px;
+  height:34px;margin-left:auto;flex-shrink:0;
+}
+.nav-search input{
+  background:transparent;border:none;color:var(--ink);font-size:13px;
+  width:180px;font-family:'Inter',sans-serif;
+}
+.nav-search input::placeholder{color:var(--ink3);}
+.nav-search input:focus{outline:none;}
+.nav-search svg{width:14px;height:14px;color:var(--ink3);flex-shrink:0;}
+
+/* ─── SUBNAV ─────────────────────────────────────── */
+.subnav{
+  background:var(--bg2);border-bottom:1px solid var(--line);
+}
+.subnav-inner{
+  max-width:1280px;margin:0 auto;padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  height:42px;overflow-x:auto;scrollbar-width:none;
+}
+.subnav-inner::-webkit-scrollbar{display:none;}
+.subnav-pills{display:flex;gap:6px;align-items:center;}
+.pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 13px;border-radius:999px;font-size:12px;font-weight:600;
+  border:1px solid var(--line);color:var(--ink3);cursor:pointer;
+  transition:all .15s;white-space:nowrap;background:transparent;
+}
+.pill:hover{color:var(--ink);border-color:var(--line2);}
+.pill.active{background:var(--red);color:#fff;border-color:var(--red);}
+.pill svg{width:13px;height:13px;}
+.subnav-right{
+  font-size:12px;font-weight:600;color:var(--red);
+  display:flex;align-items:center;gap:6px;white-space:nowrap;cursor:pointer;flex-shrink:0;
+}
+.subnav-right svg{width:13px;height:13px;}
+
+/* ─── LAYOUT ─────────────────────────────────────── */
+.page{max-width:1280px;margin:0 auto;padding:28px 24px 60px;}
+.grid-main{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start;}
+@media(max-width:960px){.grid-main{grid-template-columns:1fr;}}
+
+/* ─── HERO ───────────────────────────────────────── */
+.hero{
+  position:relative;border-radius:var(--radius);overflow:hidden;
+  background:var(--bg3);margin-bottom:24px;
+  min-height:420px;display:flex;flex-direction:column;justify-content:flex-end;
+}
+.hero-img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:brightness(.45);
+}
+.hero-img-placeholder{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#1a1f2e 0%,#0d1117 50%,#1a0a0a 100%);
+}
+.hero-img-placeholder::after{
+  content:"";position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='rgba(232,25,44,0.06)' stroke-width='2'/%3E%3Ccircle cx='50' cy='50' r='28' fill='none' stroke='rgba(232,25,44,0.04)' stroke-width='2'/%3E%3Ccircle cx='50' cy='50' r='16' fill='none' stroke='rgba(232,25,44,0.04)' stroke-width='2'/%3E%3C/svg%3E") repeat;
+}
+.hero-gradient{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.4) 50%,transparent 100%);
+}
+.hero-content{position:relative;z-index:1;padding:28px;}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--red);color:#fff;border-radius:5px;
+  padding:4px 10px;font-size:11px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;margin-bottom:14px;
+}
+.hero-title{
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;
+  font-size:38px;line-height:1.05;color:#fff;margin-bottom:10px;
+  text-shadow:0 2px 8px rgba(0,0,0,.6);
+}
+.hero-excerpt{font-size:14px;color:rgba(255,255,255,.75);line-height:1.55;margin-bottom:16px;max-width:600px;}
+.hero-meta{display:flex;align-items:center;gap:14px;font-size:12px;color:rgba(255,255,255,.5);}
+.hero-cta{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--red);color:#fff;border-radius:7px;
+  padding:9px 18px;font-size:13px;font-weight:700;
+  transition:background .15s;margin-top:16px;
+}
+.hero-cta:hover{background:var(--red-dark);}
+.hero-cta svg{width:14px;height:14px;}
+
+/* Hero dots */
+.hero-dots{display:flex;gap:6px;margin-top:14px;}
+.hero-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;}
+.hero-dot.active{background:var(--red);width:22px;border-radius:999px;}
+
+/* ─── SECTION HEADERS ────────────────────────────── */
+.section-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;gap:12px;
+}
+.section-title{
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;
+  font-size:20px;text-transform:uppercase;letter-spacing:.02em;
+  display:flex;align-items:center;gap:10px;
+}
+.section-title::before{
+  content:"";width:4px;height:20px;background:var(--red);border-radius:2px;
+}
+.see-all{
+  font-size:12px;font-weight:600;color:var(--red);
+  display:flex;align-items:center;gap:4px;transition:opacity .15s;
+}
+.see-all:hover{opacity:.75;}
+.see-all svg{width:12px;height:12px;}
+
+/* ─── NEWS GRID ──────────────────────────────────── */
+.news-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+@media(max-width:640px){.news-grid{grid-template-columns:1fr;}}
+
+.news-card{
+  background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;transition:transform .15s,border-color .15s;cursor:pointer;
+}
+.news-card:hover{transform:translateY(-2px);border-color:var(--line2);}
+.news-card-img{
+  width:100%;height:160px;object-fit:cover;background:var(--bg3);
+  position:relative;overflow:hidden;
+}
+.news-card-img-ph{
+  width:100%;height:160px;
+  background:linear-gradient(135deg,var(--bg3),var(--bg));
+  display:flex;align-items:center;justify-content:center;
+}
+.news-card-img-ph svg{width:40px;height:40px;opacity:.15;}
+.news-card-body{padding:14px;}
+.news-card-tag{
+  display:inline-block;font-size:10px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--red);margin-bottom:7px;
+}
+.news-card-title{
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;
+  line-height:1.15;color:var(--ink);margin-bottom:7px;
+}
+.news-card-excerpt{font-size:12.5px;color:var(--ink3);line-height:1.5;margin-bottom:10px;}
+.news-card-meta{font-size:11px;color:var(--ink3);display:flex;align-items:center;gap:8px;}
+.news-card-meta span{display:flex;align-items:center;gap:4px;}
+.news-card-meta svg{width:11px;height:11px;}
+
+/* ─── SIDEBAR ────────────────────────────────────── */
+.sidebar{display:flex;flex-direction:column;gap:18px;}
+
+/* Widget */
+.widget{
+  background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;
+}
+.widget-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 16px;border-bottom:1px solid var(--line);
+}
+.widget-title{
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:15px;
+  text-transform:uppercase;letter-spacing:.04em;
+  display:flex;align-items:center;gap:8px;
+}
+.widget-title::before{content:"";width:3px;height:15px;background:var(--red);border-radius:2px;}
+.widget-link{font-size:11px;font-weight:600;color:var(--red);}
+
+/* Standings widget */
+.standings-tabs{display:flex;border-bottom:1px solid var(--line);}
+.standings-tab{
+  flex:1;text-align:center;padding:9px;font-size:12px;font-weight:600;
+  color:var(--ink3);cursor:pointer;border-bottom:2px solid transparent;
+  transition:all .15s;
+}
+.standings-tab.active{color:var(--ink);border-bottom-color:var(--red);}
+
+.standings-assoc{
+  padding:10px 16px 6px;font-size:10px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink3);display:flex;align-items:center;gap:6px;
+}
+.assoc-dot{width:6px;height:6px;border-radius:50%;}
+
+.standings-row{
+  display:grid;grid-template-columns:22px 1fr 28px 28px 28px 32px;
+  align-items:center;gap:4px;padding:8px 16px;border-bottom:1px solid var(--line);
+  font-size:12.5px;transition:background .1s;
+}
+.standings-row:hover{background:var(--bg3);}
+.standings-row:last-child{border-bottom:none;}
+.standings-row .pos{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;
+  color:var(--ink3);text-align:center;
+}
+.standings-row .pos.p1{color:var(--gold);font-weight:700;}
+.standings-row .pos.p2{color:#9AA5B1;font-weight:700;}
+.standings-row .pos.p3{color:#C58A52;font-weight:700;}
+.standings-row .team{font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.standings-row .num{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink3);text-align:center;}
+.standings-row .pts{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:var(--red);text-align:center;}
+.standings-col-heads{
+  display:grid;grid-template-columns:22px 1fr 28px 28px 28px 32px;
+  gap:4px;padding:6px 16px;
+  font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--ink3);border-bottom:1px solid var(--line);
+}
+.standings-col-heads span{text-align:center;}
+.standings-col-heads span:nth-child(2){text-align:left;}
+.standings-loading{padding:28px;text-align:center;font-size:13px;color:var(--ink3);}
+.standings-footer{padding:12px 16px;border-top:1px solid var(--line);display:flex;justify-content:center;}
+.standings-footer a{font-size:12px;font-weight:600;color:var(--red);display:flex;align-items:center;gap:4px;}
+.standings-footer svg{width:12px;height:12px;}
+
+/* Quick links widget */
+.quick-links{padding:8px 0;}
+.quick-link{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;border-bottom:1px solid var(--line);
+  font-size:13px;font-weight:500;color:var(--ink2);
+  transition:background .12s,color .12s;cursor:pointer;
+}
+.quick-link:last-child{border-bottom:none;}
+.quick-link:hover{background:var(--bg3);color:var(--ink);}
+.quick-link-left{display:flex;align-items:center;gap:10px;}
+.quick-link-icon{
+  width:32px;height:32px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.quick-link svg.arr{width:13px;height:13px;color:var(--ink3);}
+
+/* ─── FOOTER ─────────────────────────────────────── */
+.footer{
+  background:var(--bg2);border-top:1px solid var(--line);
+  padding:40px 24px 24px;margin-top:48px;
+}
+.footer-inner{max-width:1280px;margin:0 auto;}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:32px;margin-bottom:32px;}
+@media(max-width:860px){.footer-top{grid-template-columns:1fr 1fr;}}
+@media(max-width:520px){.footer-top{grid-template-columns:1fr;}}
+.footer-brand .logo-text{font-size:28px;margin-bottom:8px;display:block;}
+.footer-brand p{font-size:13px;color:var(--ink3);line-height:1.6;margin-bottom:16px;}
+.footer-social{display:flex;gap:10px;}
+.social-btn{
+  width:34px;height:34px;border-radius:8px;background:var(--bg3);
+  border:1px solid var(--line);display:flex;align-items:center;justify-content:center;
+  transition:background .15s,border-color .15s;
+}
+.social-btn:hover{background:var(--line);border-color:var(--line2);}
+.social-btn svg{width:15px;height:15px;color:var(--ink2);}
+.footer-col h4{
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:14px;
+}
+.footer-col a{display:block;font-size:13px;color:var(--ink3);margin-bottom:9px;transition:color .15s;}
+.footer-col a:hover{color:var(--ink);}
+.footer-bottom{
+  border-top:1px solid var(--line);padding-top:20px;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:10px;font-size:12px;color:var(--ink3);
+}
+
+/* ─── HAMBURGER ──────────────────────────────────── */
+.hamburger{
+  display:none;flex-direction:column;justify-content:center;gap:5px;
+  width:38px;height:38px;background:var(--bg3);border:1px solid var(--line);
+  border-radius:8px;cursor:pointer;padding:8px;margin-left:auto;flex-shrink:0;
+}
+.hamburger span{display:block;height:2px;background:var(--ink);border-radius:2px;transition:all .25s;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+.mobile-menu{
+  display:none;position:fixed;inset:0;top:56px;background:var(--bg2);
+  z-index:99;overflow-y:auto;padding:16px 0 40px;
+  border-top:1px solid var(--line);
+}
+.mobile-menu.open{display:block;}
+.mobile-menu a{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 24px;font-size:16px;font-weight:600;color:var(--ink2);
+  border-bottom:1px solid var(--line);transition:background .12s,color .12s;
+}
+.mobile-menu a:hover{background:var(--bg3);color:var(--ink);}
+.mobile-menu a svg{width:14px;height:14px;color:var(--ink3);}
+.mobile-menu .mob-sep{
+  padding:14px 24px 6px;font-size:11px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);
+}
+.mobile-menu .mob-live{
+  display:flex;align-items:center;gap:10px;padding:14px 24px;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────── */
+@media(max-width:860px){
+  .grid-main{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr 1fr;}
+}
+
+@media(max-width:768px){
+  .topbar{display:none;}
+  .nav-links{display:none;}
+  .nav-search{display:none;}
+  .hamburger{display:flex;}
+  .nav-main{padding:0 16px;}
+  .hero-title{font-size:24px;}
+  .hero{min-height:340px;}
+  .hero-content{padding:20px;}
+  .hero-excerpt{font-size:13px;}
+  .page{padding:14px 12px 40px;}
+  .subnav-inner{padding:0 12px;}
+  .news-grid{grid-template-columns:1fr;}
+  .news-card-img-ph{height:140px;}
+  .section-title{font-size:17px;}
+  .footer-top{grid-template-columns:1fr;}
+  .footer-brand{margin-bottom:8px;}
+}
+
+@media(max-width:480px){
+  .logo-text{font-size:22px;}
+  .logo-tagline{display:none;}
+  .hero-title{font-size:22px;}
+  .hero-tag{font-size:10px;}
+}
+
+@media(prefers-reduced-motion:reduce){*{animation-duration:0.001ms !important;transition:none !important;}}
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-date" id="topbar-date"></span>
+    <div class="topbar-sep"></div>
+    <a class="topbar-link" href="#">Sobre nós</a>
+    <a class="topbar-link" href="#">Contactos</a>
+    <a class="topbar-link" href="#">Newsletter</a>
+  </div>
+  <div class="topbar-right">
+    <div class="live-badge">
+      <span class="dot"></span>
+      <span>Em Direto</span>
+    </div>
+    <select class="lang-sel" id="lang-sel">
+      <option value="pt">🇵🇹 PT</option>
+      <option value="en">🇬🇧 EN</option>
+      <option value="es">🇪🇸 ES</option>
+    </select>
+    <button class="btn-entrar">Entrar</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <nav class="nav-main">
+    <a class="logo" href="index.html">
+      <div class="logo-icon">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="40" stroke="white" stroke-width="8" opacity=".25"/>
+          <circle cx="50" cy="50" r="22" fill="white" opacity=".3"/>
+          <circle cx="50" cy="50" r="9" fill="white"/>
+          <line x1="50" y1="5" x2="50" y2="41" stroke="white" stroke-width="5" stroke-linecap="round"/>
+          <polygon points="50,5 44,20 56,20" fill="white"/>
+        </svg>
+      </div>
+      <div>
+        <div class="logo-text">Portal <em>180</em></div>
+        <div class="logo-tagline">O Portal das Setas</div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link active" href="index.html">Início</a>
+      <a class="nav-link" href="#">Notícias</a>
+      <a class="nav-link" href="#">
+        Competições
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </a>
+      <a class="nav-link" href="#">
+        Associações
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </a>
+      <a class="nav-link" href="#">Classificações</a>
+      <a class="nav-link" href="#">Jogadores</a>
+      <a class="nav-link" href="#">Vídeos</a>
+    </div>
+    <div class="nav-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Pesquisar notícias, jogadores...">
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html"><span>Início</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+  <a href="#"><span>Notícias</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+  <a href="#"><span>Competições</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+  <a href="#"><span>Classificações</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+  <a href="#"><span>Jogadores</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+  <a href="#"><span>Vídeos</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+  <div class="mob-sep">Associações</div>
+  <a href="aszo.html"><span>ASZO — Zona Oeste</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+  <a href="asl.html"><span>ASL — Lisboa</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+</div>
+
+<!-- SUBNAV -->
+<div class="subnav">
+  <div class="subnav-inner">
+    <div class="subnav-pills">
+      <button class="pill active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        Todas
+      </button>
+      <button class="pill">🇵🇹 Nacionais</button>
+      <button class="pill">🌍 Internacionais</button>
+      <button class="pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Equipas
+      </button>
+      <button class="pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Individuais
+      </button>
+    </div>
+    <a class="subnav-right" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Ver Calendário
+    </a>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main class="page">
+  <div class="grid-main">
+
+    <!-- LEFT COLUMN -->
+    <div>
+      <!-- HERO -->
+      <div class="hero">
+        <div class="hero-img-placeholder"></div>
+        <div class="hero-gradient"></div>
+        <div class="hero-content">
+          <div class="hero-tag">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Destaque
+          </div>
+          <h1 class="hero-title">Bem-vindo ao Portal 180<br>— O Portal das Setas</h1>
+          <p class="hero-excerpt">O teu espaço de referência para notícias, classificações, resultados e tudo sobre o mundo das setas em Portugal e no mundo. Em breve, as primeiras notícias.</p>
+          <div class="hero-meta">
+            <span>Portal 180</span>
+            <span>·</span>
+            <span id="hero-date"></span>
+          </div>
+          <div class="hero-dots">
+            <div class="hero-dot active"></div>
+            <div class="hero-dot"></div>
+            <div class="hero-dot"></div>
+            <div class="hero-dot"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ULTIMAS NOTICIAS -->
+      <div class="section-head">
+        <h2 class="section-title">Últimas Notícias</h2>
+        <a class="see-all" href="noticias.html">
+          Ver todas
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>
+
+      <div class="news-grid" id="home-news-grid">
+        <!-- loaded dynamically -->
+        <div class="news-card"><div class="news-card-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="width:36px;height:36px;opacity:.1;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div><div class="news-card-body"><div style="height:10px;width:40%;background:var(--bg3);border-radius:4px;margin-bottom:8px;"></div><div style="height:18px;background:var(--bg3);border-radius:4px;margin-bottom:6px;"></div><div style="height:14px;background:var(--bg3);border-radius:4px;"></div></div></div>
+        <div class="news-card"><div class="news-card-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="width:36px;height:36px;opacity:.1;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div><div class="news-card-body"><div style="height:10px;width:40%;background:var(--bg3);border-radius:4px;margin-bottom:8px;"></div><div style="height:18px;background:var(--bg3);border-radius:4px;margin-bottom:6px;"></div><div style="height:14px;background:var(--bg3);border-radius:4px;"></div></div></div>
+        <div class="news-card"><div class="news-card-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="width:36px;height:36px;opacity:.1;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div><div class="news-card-body"><div style="height:10px;width:40%;background:var(--bg3);border-radius:4px;margin-bottom:8px;"></div><div style="height:18px;background:var(--bg3);border-radius:4px;margin-bottom:6px;"></div><div style="height:14px;background:var(--bg3);border-radius:4px;"></div></div></div>
+        <div class="news-card"><div class="news-card-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="width:36px;height:36px;opacity:.1;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div><div class="news-card-body"><div style="height:10px;width:40%;background:var(--bg3);border-radius:4px;margin-bottom:8px;"></div><div style="height:18px;background:var(--bg3);border-radius:4px;margin-bottom:6px;"></div><div style="height:14px;background:var(--bg3);border-radius:4px;"></div></div></div>
+      </div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <!-- CLASSIFICAÇÕES WIDGET -->
+      <div class="widget">
+        <div class="widget-head">
+          <span class="widget-title">Classificações</span>
+          <a class="widget-link" href="aszo.html">Ver todas →</a>
+        </div>
+        <div class="standings-tabs">
+          <div class="standings-tab active" data-assoc="aszo" onclick="switchAssoc('aszo',this)">ASZO</div>
+          <div class="standings-tab" data-assoc="asl" onclick="switchAssoc('asl',this)">ASL</div>
+        </div>
+
+        <!-- ASZO standings -->
+        <div id="standings-aszo">
+          <div class="standings-assoc">
+            <span class="assoc-dot" style="background:#00A86B"></span>
+            1ª Divisão
+          </div>
+          <div class="standings-col-heads">
+            <span>#</span><span>Equipa</span><span>J</span><span>V</span><span>D</span><span>Pts</span>
+          </div>
+          <div id="aszo-rows"><div class="standings-loading">A carregar...</div></div>
+        </div>
+
+        <!-- ASL standings (hidden) -->
+        <div id="standings-asl" style="display:none;">
+          <div class="standings-assoc">
+            <span class="assoc-dot" style="background:#5C6BC0"></span>
+            1ª Divisão
+          </div>
+          <div class="standings-col-heads">
+            <span>#</span><span>Equipa</span><span>J</span><span>V</span><span>D</span><span>Pts</span>
+          </div>
+          <div id="asl-rows"><div class="standings-loading">A carregar...</div></div>
+        </div>
+
+        <div class="standings-footer">
+          <a href="aszo.html" id="standings-more-link">
+            Ver classificação completa
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- LINKS RÁPIDOS -->
+      <div class="widget">
+        <div class="widget-head">
+          <span class="widget-title">Ligas</span>
+        </div>
+        <div class="quick-links">
+          <a class="quick-link" href="aszo.html">
+            <div class="quick-link-left">
+              <div class="quick-link-icon" style="background:rgba(0,168,107,.12);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00A86B" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+              </div>
+              ASZO — Zona Oeste
+            </div>
+            <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a class="quick-link" href="aszo-div1.html">
+            <div class="quick-link-left">
+              <div class="quick-link-icon" style="background:rgba(0,63,45,.2);">
+                <span style="font-size:11px;font-weight:700;color:#00A86B;">1ª</span>
+              </div>
+              ASZO 1ª Divisão
+            </div>
+            <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a class="quick-link" href="aszo-div2.html">
+            <div class="quick-link-left">
+              <div class="quick-link-icon" style="background:rgba(0,63,45,.2);">
+                <span style="font-size:11px;font-weight:700;color:#00A86B;">2ª</span>
+              </div>
+              ASZO 2ª Divisão
+            </div>
+            <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a class="quick-link" href="asl.html">
+            <div class="quick-link-left">
+              <div class="quick-link-icon" style="background:rgba(92,107,192,.12);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5C6BC0" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+              </div>
+              ASL — Lisboa
+            </div>
+            <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a class="quick-link" href="asl-div1.html">
+            <div class="quick-link-left">
+              <div class="quick-link-icon" style="background:rgba(26,35,126,.2);">
+                <span style="font-size:11px;font-weight:700;color:#5C6BC0;">1ª</span>
+              </div>
+              ASL 1ª Divisão
+            </div>
+            <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a class="quick-link" href="asl-div1f.html">
+            <div class="quick-link-left">
+              <div class="quick-link-icon" style="background:rgba(136,14,79,.15);">
+                <span style="font-size:11px;font-weight:700;color:#e91e8c;">♀</span>
+              </div>
+              ASL 1ª Div. Feminina
+            </div>
+            <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="logo-text">Portal <em>180</em></span>
+        <p>O teu portal de referência sobre setas em Portugal. Notícias, competições, associações, classificações, jogadores e muito mais.</p>
+        <div class="footer-social">
+          <a class="social-btn" href="#" title="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a class="social-btn" href="#" title="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a class="social-btn" href="#" title="YouTube">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+          </a>
+          <a class="social-btn" href="#" title="X / Twitter">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a class="social-btn" href="#" title="TikTok">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.75a8.16 8.16 0 0 0 4.77 1.52V6.82a4.85 4.85 0 0 1-1-.13z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Explorar</h4>
+        <a href="#">Notícias</a>
+        <a href="#">Competições</a>
+        <a href="#">Associações</a>
+        <a href="#">Classificações</a>
+        <a href="#">Jogadores</a>
+        <a href="#">Vídeos</a>
+      </div>
+      <div class="footer-col">
+        <h4>Associações</h4>
+        <a href="aszo.html">ASZO</a>
+        <a href="asl.html">ASL</a>
+      </div>
+      <div class="footer-col">
+        <h4>Informações</h4>
+        <a href="#">Sobre nós</a>
+        <a href="#">Contactos</a>
+        <a href="#">Estatuto Editorial</a>
+        <a href="#">Termos e Condições</a>
+        <a href="#">Política de Privacidade</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Portal 180. Todos os direitos reservados.</span>
+      <span>Dados via 2K Dart Software</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+// ── SUPABASE NEWS ─────────────────────────────────
+const SUPABASE_URL = "https://rqqytfrcnavexinmgbhu.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJxcXl0ZnJjbmF2ZXhpbm1nYmh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU0NzE5MTEsImV4cCI6MjEwMTA0NzkxMX0.4yY0PHxtjn631DXZyZyvmklEXM8fRYwiB8ENDOWEjEE";
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function fmtDate(d){
+  return new Date(d).toLocaleDateString("pt-PT",{day:"numeric",month:"long",year:"numeric"});
+}
+
+async function loadNews(){
+  const { data, error } = await db
+    .from("noticias")
+    .select("id,titulo,slug,excerpt,imagem_url,autor,categoria,publicado_em,criado_em")
+    .eq("publicado", true)
+    .order("publicado_em", { ascending: false })
+    .limit(5);
+
+  if(error || !data || !data.length) return;
+
+  // Update hero with latest article
+  const latest = data[0];
+  const hero = document.querySelector(".hero");
+  if(hero && latest){
+    if(latest.imagem_url){
+      const ph = hero.querySelector(".hero-img-placeholder");
+      if(ph){
+        const img = document.createElement("img");
+        img.className = "hero-img";
+        img.src = latest.imagem_url;
+        img.alt = latest.titulo;
+        hero.insertBefore(img, ph);
+        ph.remove();
+      }
+    }
+    const titleEl = hero.querySelector(".hero-title");
+    if(titleEl) titleEl.textContent = latest.titulo;
+    const excerptEl = hero.querySelector(".hero-excerpt");
+    if(excerptEl) excerptEl.textContent = latest.excerpt || "";
+    const metaAutor = hero.querySelector(".hero-meta span:first-child");
+    if(metaAutor) metaAutor.textContent = latest.autor;
+
+    // Make hero clickable
+    hero.style.cursor = "pointer";
+    hero.addEventListener("click", function(){
+      window.location.href = "noticia.html?slug=" + latest.slug;
+    });
+  }
+
+  // Render news cards (skip first — already in hero)
+  const newsData = data.slice(1, 5);
+  const grid = document.getElementById("home-news-grid");
+  if(!grid) return;
+
+  if(!newsData.length){
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--ink3);font-size:14px;">Em breve as primeiras notícias.</div>';
+    return;
+  }
+
+  grid.innerHTML = newsData.map(a => `
+    <a class="news-card" href="noticia.html?slug=${a.slug}" style="display:block;">
+      ${a.imagem_url
+        ? `<img style="width:100%;height:160px;object-fit:cover;" src="${a.imagem_url}" alt="${a.titulo}" loading="lazy">`
+        : `<div class="news-card-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="width:36px;height:36px;opacity:.12;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>`
+      }
+      <div class="news-card-body">
+        <span class="news-card-tag">${a.categoria}</span>
+        <h3 class="news-card-title">${a.titulo}</h3>
+        ${a.excerpt ? `<p class="news-card-excerpt">${a.excerpt}</p>` : ""}
+        <div class="news-card-meta">
+          <span>${a.autor}</span>
+          <span>${fmtDate(a.publicado_em || a.criado_em)}</span>
+        </div>
+      </div>
+    </a>
+  `).join("");
+}
+
+loadNews();
+
+// Date
+var now = new Date();
+var days = ["Domingo","Segunda-feira","Terça-feira","Quarta-feira","Quinta-feira","Sexta-feira","Sábado"];
+var months = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+var dateStr = days[now.getDay()]+", "+now.getDate()+" de "+months[now.getMonth()]+" de "+now.getFullYear();
+var el = document.getElementById("topbar-date");
+if(el) el.textContent = dateStr;
+var hd = document.getElementById("hero-date");
+if(hd) hd.textContent = dateStr;
+var yr = document.getElementById("year");
+if(yr) yr.textContent = now.getFullYear();
+
+// Hamburger menu
+var hamburger = document.getElementById("hamburger");
+var mobileMenu = document.getElementById("mobile-menu");
+if(hamburger && mobileMenu){
+  hamburger.addEventListener("click", function(){
+    hamburger.classList.toggle("open");
+    mobileMenu.classList.toggle("open");
+    document.body.style.overflow = mobileMenu.classList.contains("open") ? "hidden" : "";
+  });
+  // Close on link click
+  mobileMenu.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click", function(){
+      hamburger.classList.remove("open");
+      mobileMenu.classList.remove("open");
+      document.body.style.overflow = "";
+    });
+  });
+}
+
+// Subnav pills
+document.querySelectorAll(".pill").forEach(function(p){
+  p.addEventListener("click", function(){
+    document.querySelectorAll(".pill").forEach(function(x){x.classList.remove("active");});
+    this.classList.add("active");
+  });
+});
+
+// Standings widget
+var cache = {};
+
+function extractRows(data){
+  if(data && data.tableEntries && Array.isArray(data.tableEntries)){
+    var f = data.tableEntries[0];
+    if(f && f.tableEntries && Array.isArray(f.tableEntries)) return f.tableEntries;
+  }
+  return [];
+}
+
+function renderStandings(rows, containerId){
+  var container = document.getElementById(containerId);
+  if(!container) return;
+  if(!rows || rows.length === 0){
+    container.innerHTML = '<div class="standings-loading">Sem dados disponíveis.</div>';
+    return;
+  }
+  var html = "";
+  rows.slice(0,6).forEach(function(raw, i){
+    var pos = String(raw.placement||"").replace(".","").trim() || (i+1);
+    var rank = parseInt(pos,10)||(i+1);
+    var posClass = rank===1?"p1":rank===2?"p2":rank===3?"p3":"";
+    var name = raw.participantName || (raw.participant&&raw.participant.displayName) || "—";
+    var p = raw.matchCount != null ? raw.matchCount : "—";
+    var w = raw.win != null ? raw.win : "—";
+    var l = raw.lost != null ? raw.lost : "—";
+    var pts = raw.points1 != null ? raw.points1 : "—";
+    html += '<div class="standings-row">';
+    html += '<span class="pos '+posClass+'">'+rank+'</span>';
+    html += '<span class="team" title="'+name+'">'+name+'</span>';
+    html += '<span class="num">'+p+'</span>';
+    html += '<span class="num">'+w+'</span>';
+    html += '<span class="num">'+l+'</span>';
+    html += '<span class="pts">'+pts+'</span>';
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+function loadStandings(assoc){
+  var apiMap = { aszo: "/api/aszo-div1", asl: "/api/asl-div1" };
+  var rowId = assoc+"-rows";
+  var api = apiMap[assoc];
+  if(!api) return;
+  if(cache[assoc]){ renderStandings(cache[assoc], rowId); return; }
+  document.getElementById(rowId).innerHTML = '<div class="standings-loading">A carregar...</div>';
+  fetch(api+"?_="+Date.now(), {cache:"no-store"})
+    .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+    .then(function(json){
+      cache[assoc] = extractRows(json);
+      renderStandings(cache[assoc], rowId);
+    })
+    .catch(function(){ document.getElementById(rowId).innerHTML = '<div class="standings-loading">Erro ao carregar.</div>'; });
+}
+
+window.switchAssoc = function(assoc, el){
+  document.querySelectorAll(".standings-tab").forEach(function(t){ t.classList.remove("active"); });
+  el.classList.add("active");
+  document.getElementById("standings-aszo").style.display = assoc==="aszo" ? "" : "none";
+  document.getElementById("standings-asl").style.display = assoc==="asl" ? "" : "none";
+  var linkMap = { aszo:"aszo.html", asl:"asl.html" };
+  document.getElementById("standings-more-link").href = linkMap[assoc]||"#";
+  loadStandings(assoc);
+};
+
+// Load ASZO on start
+loadStandings("aszo");
+
+})();
+</script>
+</body>
+</html>
