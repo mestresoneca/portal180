@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /
+Disallow: /admin.html
+
+Sitemap: https://portal180.pages.dev/sitemap.xml

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://portal180.pages.dev/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://portal180.pages.dev/noticias.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://portal180.pages.dev/classificacoes.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://portal180.pages.dev/aszo.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://portal180.pages.dev/aszo-div1.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://portal180.pages.dev/aszo-div2.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://portal180.pages.dev/asl.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://portal180.pages.dev/asl-div1.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://portal180.pages.dev/asl-div2a.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://portal180.pages.dev/asl-div2b.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://portal180.pages.dev/asl-div1f.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+</urlset>
