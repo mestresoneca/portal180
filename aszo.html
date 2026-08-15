@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASZO · Portal 180</title>
+<meta name="description" content="Associação de Setas da Zona Oeste — classificações das divisões 2025/2026">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0D0F12;--bg2:#13161B;--bg3:#1A1E26;--line:#252A35;--line2:#2E3440;--ink:#F0F2F5;--ink2:#B8C0CC;--ink3:#7A8494;--red:#E8192C;--radius:10px;--shadow:0 2px 8px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);--max-w:1200px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+.page-hero{background:linear-gradient(135deg,var(--bg2) 0%,var(--bg) 100%);border-bottom:1px solid var(--line);padding:28px 24px;position:relative;overflow:hidden;}
+.page-hero::before{content:"";position:absolute;top:-60px;right:-60px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(0,105,74,.2) 0%,transparent 70%);pointer-events:none;}
+.page-hero-inner{max-width:var(--max-w);margin:0 auto;display:flex;align-items:center;gap:16px;}
+.assoc-badge{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:15px;color:#fff;background:linear-gradient(135deg,#003F2D,#00694A);box-shadow:0 4px 16px rgba(0,105,74,.3);flex-shrink:0;}
+.hero-text h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:32px;text-transform:uppercase;letter-spacing:.01em;line-height:1;}
+.hero-text h1 span{color:var(--red);}
+.hero-text p{font-size:13px;color:var(--ink3);margin-top:5px;}
+.wrap{max-width:var(--max-w);margin:0 auto;padding:28px 20px 60px;}
+.section-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin:0 0 16px;display:flex;align-items:center;gap:10px;}
+.section-label::after{content:"";flex:1;height:1px;background:var(--line);}
+.leagues-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:500px){.leagues-grid{grid-template-columns:1fr;}}
+.league-card{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px;background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);transition:all .15s;position:relative;overflow:hidden;}
+.league-card::before{content:"";position:absolute;top:0;left:0;bottom:0;width:3px;background:linear-gradient(180deg,#003F2D,#00694A);}
+.league-card:hover{background:var(--bg3);border-color:var(--line2);transform:translateX(4px);}
+.league-left{display:flex;align-items:center;gap:14px;}
+.league-num{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:16px;color:#fff;background:linear-gradient(135deg,#003F2D,#00694A);flex-shrink:0;}
+.league-name{font-weight:600;font-size:14px;color:var(--ink);}
+.league-sub{font-size:12px;color:var(--ink3);margin-top:2px;}
+.league-card svg{width:14px;height:14px;color:var(--ink3);flex-shrink:0;}
+.site-footer{max-width:var(--max-w);margin:24px auto 0;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--ink3);border-top:1px solid var(--line);}
+.site-footer a{color:var(--ink3);}
+</style>
+</head>
+<body>
+<script src="nav.js"></script>
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="assoc-badge">ASZO</div>
+    <div class="hero-text">
+      <h1>ASZO · <span>Zona Oeste</span></h1>
+      <p>Associação de Setas da Zona Oeste · Temporada 2025/2026</p>
+    </div>
+  </div>
+</div>
+<div class="wrap">
+  <p class="section-label">Tabelas Classificativas</p>
+  <div class="leagues-grid">
+    <a class="league-card" href="aszo-div1.html">
+      <div class="league-left"><div class="league-num">1ª</div><div><div class="league-name">1ª Divisão</div><div class="league-sub">Campeonato 2025/2026</div></div></div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+    <a class="league-card" href="aszo-div2.html">
+      <div class="league-left"><div class="league-num">2ª</div><div><div class="league-name">2ª Divisão</div><div class="league-sub">Campeonato 2025/2026</div></div></div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+  </div>
+</div>
+<footer class="site-footer"><span>Portal 180 · ASZO 2025/2026</span><a href="index.html">Portal 180 →</a></footer>
+</body>
+</html>
