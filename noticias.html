@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notícias · Portal 180</title>
+<meta name="description" content="Últimas notícias sobre setas em Portugal e no mundo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#0D0F12;--bg2:#13161B;--bg3:#1A1E26;--line:#252A35;--line2:#2E3440;--ink:#F0F2F5;--ink2:#B8C0CC;--ink3:#7A8494;--red:#E8192C;--radius:10px;--shadow:0 2px 8px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);--max-w:1200px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}
+.page-hero{background:linear-gradient(135deg,var(--bg2) 0%,var(--bg) 100%);border-bottom:1px solid var(--line);padding:28px 24px;position:relative;overflow:hidden;}
+.page-hero::before{content:"";position:absolute;top:-80px;right:-80px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(232,25,44,.1) 0%,transparent 70%);pointer-events:none;}
+.page-hero-inner{max-width:var(--max-w);margin:0 auto;}
+.page-hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:34px;text-transform:uppercase;letter-spacing:.01em;}
+.page-hero h1 span{color:var(--red);}
+.page-hero p{font-size:13px;color:var(--ink3);margin-top:5px;}
+.filters{background:var(--bg2);border-bottom:1px solid var(--line);}
+.filters-inner{max-width:var(--max-w);margin:0 auto;padding:0 24px;display:flex;gap:6px;height:48px;align-items:center;overflow-x:auto;scrollbar-width:none;}
+.filters-inner::-webkit-scrollbar{display:none;}
+.filter-btn{flex-shrink:0;padding:6px 14px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid var(--line);color:var(--ink3);cursor:pointer;background:transparent;transition:all .15s;font-family:inherit;}
+.filter-btn:hover{color:var(--ink);border-color:var(--line2);}
+.filter-btn.active{background:var(--red);color:#fff;border-color:var(--red);}
+.wrap{max-width:var(--max-w);margin:0 auto;padding:28px 20px 60px;}
+.featured{margin-bottom:28px;}
+.featured-card{display:grid;grid-template-columns:1fr 1fr;background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:border-color .15s;}
+.featured-card:hover{border-color:var(--line2);}
+@media(max-width:720px){.featured-card{grid-template-columns:1fr;}}
+.featured-img{width:100%;height:100%;min-height:240px;object-fit:cover;background:var(--bg3);}
+.featured-img-ph{width:100%;min-height:240px;background:linear-gradient(135deg,var(--bg3),var(--bg));display:flex;align-items:center;justify-content:center;}
+.featured-img-ph svg{width:56px;height:56px;opacity:.1;}
+.featured-body{padding:28px;display:flex;flex-direction:column;justify-content:center;gap:12px;}
+.feat-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--red);background:rgba(232,25,44,.1);padding:4px 10px;border-radius:5px;width:fit-content;}
+.feat-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:26px;line-height:1.15;color:var(--ink);}
+.feat-excerpt{font-size:14px;color:var(--ink3);line-height:1.6;}
+.feat-meta{font-size:12px;color:var(--ink3);display:flex;gap:10px;align-items:center;}
+.feat-cta{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--red);}
+.feat-cta svg{width:13px;height:13px;}
+.grid-label{display:flex;align-items:center;margin-bottom:16px;}
+.grid-label h2{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;text-transform:uppercase;letter-spacing:.02em;display:flex;align-items:center;gap:8px;}
+.grid-label h2::before{content:"";width:3px;height:18px;background:var(--red);border-radius:2px;}
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:860px){.news-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:520px){.news-grid{grid-template-columns:1fr;}}
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:transform .15s,border-color .15s;display:block;}
+.card:hover{transform:translateY(-2px);border-color:var(--line2);}
+.card-img{width:100%;height:160px;object-fit:cover;}
+.card-img-ph{width:100%;height:160px;background:linear-gradient(135deg,var(--bg3),var(--bg));display:flex;align-items:center;justify-content:center;}
+.card-img-ph svg{width:36px;height:36px;opacity:.1;}
+.card-body{padding:16px;}
+.card-tag{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--red);margin-bottom:7px;display:block;}
+.card-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;line-height:1.15;margin-bottom:8px;color:var(--ink);}
+.card-excerpt{font-size:12.5px;color:var(--ink3);line-height:1.55;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.card-meta{font-size:11px;color:var(--ink3);display:flex;justify-content:space-between;}
+.loading-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:860px){.loading-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:520px){.loading-grid{grid-template-columns:1fr;}}
+.skel-card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+.skel-img{height:160px;}.skel-body{padding:16px;}.skel-line{height:13px;border-radius:4px;margin-bottom:8px;}
+.skeleton{background:linear-gradient(90deg,var(--bg2) 25%,var(--bg3) 37%,var(--bg2) 63%);background-size:400% 100%;animation:sh 1.4s ease infinite;}
+@keyframes sh{0%{background-position:100% 0}100%{background-position:0 0}}
+.empty{text-align:center;padding:60px 24px;color:var(--ink3);}
+.empty h3{font-size:18px;font-weight:600;margin-bottom:6px;color:var(--ink2);}
+.site-footer{max-width:var(--max-w);margin:24px auto 0;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--ink3);border-top:1px solid var(--line);}
+.site-footer a{color:var(--ink3);}
+@media(max-width:680px){.wrap{padding:16px 12px 40px;}.page-hero{padding:20px 16px;}}
+</style>
+</head>
+<body>
+<script src="nav.js"></script>
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <h1>Últimas <span>Notícias</span></h1>
+    <p>Tudo sobre o mundo das setas em Portugal e no mundo</p>
+  </div>
+</div>
+<div class="filters">
+  <div class="filters-inner">
+    <button class="filter-btn active" data-cat="todas" onclick="filterCat('todas',this)">Todas</button>
+    <button class="filter-btn" data-cat="Nacionais" onclick="filterCat('Nacionais',this)">🇵🇹 Nacionais</button>
+    <button class="filter-btn" data-cat="Internacionais" onclick="filterCat('Internacionais',this)">🌍 Internacionais</button>
+    <button class="filter-btn" data-cat="Equipas" onclick="filterCat('Equipas',this)">Equipas</button>
+    <button class="filter-btn" data-cat="Individuais" onclick="filterCat('Individuais',this)">Individuais</button>
+    <button class="filter-btn" data-cat="Associações" onclick="filterCat('Associações',this)">Associações</button>
+  </div>
+</div>
+<div class="wrap">
+  <div class="featured" id="featured-wrap"></div>
+  <div class="grid-label"><h2>Todas as Notícias</h2></div>
+  <div id="news-grid"></div>
+</div>
+<footer class="site-footer">
+  <span>Portal 180 · Notícias de Setas</span>
+  <a href="index.html">Início →</a>
+</footer>
+<script>
+const SUPABASE_URL="https://rqqytfrcnavexinmgbhu.supabase.co";
+const SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJxcXl0ZnJjbmF2ZXhpbm1nYmh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU0NzE5MTEsImV4cCI6MjEwMTA0NzkxMX0.4yY0PHxtjn631DXZyZyvmklEXM8fRYwiB8ENDOWEjEE";
+const {createClient}=supabase;
+const db=createClient(SUPABASE_URL,SUPABASE_KEY);
+let all=[];
+function fmtDate(d){return new Date(d).toLocaleDateString("pt-PT",{day:"numeric",month:"long",year:"numeric"});}
+const PH='<div class="card-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>';
+const FPH='<div class="featured-img-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>';
+function renderFeatured(a){
+  var w=document.getElementById("featured-wrap");
+  if(!a){w.innerHTML="";return;}
+  w.innerHTML='<a class="featured-card" href="noticia.html?slug='+a.slug+'">'+
+    (a.imagem_url?'<img class="featured-img" src="'+a.imagem_url+'" alt="'+a.titulo+'" loading="lazy">':FPH)+
+    '<div class="featured-body"><span class="feat-tag">'+a.categoria+'</span>'+
+    '<h2 class="feat-title">'+a.titulo+'</h2>'+
+    (a.excerpt?'<p class="feat-excerpt">'+a.excerpt+'</p>':'')+
+    '<div class="feat-meta"><span>'+a.autor+'</span><span>·</span><span>'+fmtDate(a.publicado_em||a.criado_em)+'</span></div>'+
+    '<span class="feat-cta">Ler artigo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></div></a>';
+}
+function renderGrid(data){
+  var grid=document.getElementById("news-grid");
+  if(!data||!data.length){grid.innerHTML='<div class="empty"><h3>Sem notícias nesta categoria</h3><p>Tenta outra categoria ou volta mais tarde.</p></div>';return;}
+  grid.innerHTML='<div class="news-grid">'+data.map(function(a){
+    return '<a class="card" href="noticia.html?slug='+a.slug+'">'+
+      (a.imagem_url?'<img class="card-img" src="'+a.imagem_url+'" alt="'+a.titulo+'" loading="lazy">':PH)+
+      '<div class="card-body"><span class="card-tag">'+a.categoria+'</span>'+
+      '<h3 class="card-title">'+a.titulo+'</h3>'+
+      (a.excerpt?'<p class="card-excerpt">'+a.excerpt+'</p>':'')+
+      '<div class="card-meta"><span>'+a.autor+'</span><span>'+fmtDate(a.publicado_em||a.criado_em)+'</span></div></div></a>';
+  }).join("")+'</div>';
+}
+function showSkeletons(){
+  document.getElementById("featured-wrap").innerHTML="";
+  document.getElementById("news-grid").innerHTML='<div class="loading-grid">'+
+    [1,2,3,4,5,6].map(function(){return'<div class="skel-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skel-line skeleton" style="width:35%;height:10px;"></div><div class="skel-line skeleton" style="height:18px;"></div><div class="skel-line skeleton"></div></div></div>';}).join("")+'</div>';
+}
+function filterCat(cat,el){
+  document.querySelectorAll(".filter-btn").forEach(function(b){b.classList.remove("active");});
+  el.classList.add("active");
+  var f=cat==="todas"?all:all.filter(function(a){return a.categoria===cat;});
+  renderFeatured(f[0]);renderGrid(f.slice(1));
+}
+async function load(){
+  showSkeletons();
+  var {data,error}=await db.from("noticias").select("id,titulo,slug,excerpt,imagem_url,autor,categoria,publicado_em,criado_em").eq("publicado",true).order("publicado_em",{ascending:false});
+  if(error||!data){document.getElementById("news-grid").innerHTML='<div class="empty"><h3>Erro ao carregar</h3></div>';return;}
+  all=data||[];
+  var cat=new URLSearchParams(window.location.search).get("cat");
+  if(cat){var btn=document.querySelector('.filter-btn[data-cat="'+cat+'"]');if(btn)filterCat(cat,btn);else{renderFeatured(all[0]);renderGrid(all.slice(1));}}
+  else{renderFeatured(all[0]);renderGrid(all.slice(1));}
+}
+load();
+</script>
+</body>
+</html>

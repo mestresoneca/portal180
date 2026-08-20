@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Classificações · Portal 180</title>
+<meta name="description" content="Tabelas classificativas em tempo real das ligas de setas em Portugal.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0D0F12;--bg2:#13161B;--bg3:#1A1E26;--line:#252A35;--line2:#2E3440;--ink:#F0F2F5;--ink2:#B8C0CC;--ink3:#7A8494;--red:#E8192C;--radius:10px;--shadow:0 2px 8px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);--max-w:1200px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+.page-hero{background:linear-gradient(135deg,var(--bg2) 0%,var(--bg) 100%);border-bottom:1px solid var(--line);padding:28px 24px;position:relative;overflow:hidden;}
+.page-hero::before{content:"";position:absolute;top:-80px;right:-80px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(232,25,44,.08) 0%,transparent 70%);pointer-events:none;}
+.page-hero-inner{max-width:var(--max-w);margin:0 auto;}
+.page-hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:34px;text-transform:uppercase;letter-spacing:.01em;}
+.page-hero h1 span{color:var(--red);}
+.page-hero p{font-size:13px;color:var(--ink3);margin-top:5px;}
+.wrap{max-width:var(--max-w);margin:0 auto;padding:32px 20px 60px;}
+.assoc-block{margin-bottom:40px;}
+.assoc-head{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--line);}
+.assoc-badge{width:48px;height:48px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:15px;color:#fff;flex-shrink:0;}
+.assoc-info h2{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:22px;text-transform:uppercase;letter-spacing:.01em;}
+.assoc-info p{font-size:13px;color:var(--ink3);margin-top:3px;}
+.assoc-cta{margin-left:auto;font-size:12px;font-weight:600;color:var(--red);display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.assoc-cta svg{width:12px;height:12px;}
+.leagues-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+@media(max-width:760px){.leagues-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.leagues-grid{grid-template-columns:1fr;}}
+.league-card{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);transition:all .15s;position:relative;overflow:hidden;}
+.league-card::before{content:"";position:absolute;top:0;left:0;bottom:0;width:3px;}
+.league-card:hover{background:var(--bg3);border-color:var(--line2);transform:translateX(4px);}
+.league-left{display:flex;align-items:center;gap:12px;}
+.league-num{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:14px;color:#fff;flex-shrink:0;}
+.league-name{font-weight:600;font-size:14px;color:var(--ink);}
+.league-sub{font-size:11px;color:var(--ink3);margin-top:2px;}
+.league-card > svg{width:14px;height:14px;color:var(--ink3);flex-shrink:0;}
+.aszo .assoc-badge,.aszo .league-num{background:linear-gradient(135deg,#003F2D,#00694A);}
+.aszo .assoc-badge{box-shadow:0 4px 16px rgba(0,105,74,.3);}
+.aszo .league-card::before{background:linear-gradient(180deg,#003F2D,#00694A);}
+.asl .assoc-badge{background:linear-gradient(135deg,#1a237e,#3949AB);box-shadow:0 4px 16px rgba(57,73,171,.3);}
+.asl-std .league-num{background:linear-gradient(135deg,#1a237e,#3949AB);}
+.asl-std.league-card::before,.asl-std .league-card::before{background:linear-gradient(180deg,#1a237e,#3949AB);}
+.asl-fem .league-num{background:linear-gradient(135deg,#880e4f,#C2185B);}
+.asl-fem.league-card::before,.asl-fem .league-card::before{background:linear-gradient(180deg,#880e4f,#C2185B);}
+.site-footer{max-width:var(--max-w);margin:24px auto 0;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--ink3);border-top:1px solid var(--line);}
+.site-footer a{color:var(--ink3);}
+@media(max-width:680px){.wrap{padding:20px 12px 40px;}.page-hero{padding:20px 16px;}}
+</style>
+</head>
+<body>
+<script src="nav.js"></script>
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <h1>Tabelas <span>Classificativas</span></h1>
+    <p>Classificações em tempo real de todas as ligas disponíveis no Portal 180</p>
+  </div>
+</div>
+<div class="wrap">
+  <div class="assoc-block aszo">
+    <div class="assoc-head">
+      <div class="assoc-badge">ASZO</div>
+      <div class="assoc-info"><h2>ASZO</h2><p>Associação de Setas da Zona Oeste</p></div>
+      <a class="assoc-cta" href="aszo.html">Ver tudo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+    </div>
+    <div class="leagues-grid">
+      <a class="league-card" href="aszo-div1.html">
+        <div class="league-left"><div class="league-num">1ª</div><div><div class="league-name">1ª Divisão</div><div class="league-sub">Campeonato 2025/2026</div></div></div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+      <a class="league-card" href="aszo-div2.html">
+        <div class="league-left"><div class="league-num">2ª</div><div><div class="league-name">2ª Divisão</div><div class="league-sub">Campeonato 2025/2026</div></div></div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="assoc-block asl">
+    <div class="assoc-head">
+      <div class="assoc-badge">ASL</div>
+      <div class="assoc-info"><h2>ASL</h2><p>Associação de Setas de Lisboa</p></div>
+      <a class="assoc-cta" href="asl.html">Ver tudo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+    </div>
+    <div class="leagues-grid">
+      <a class="league-card asl-std" href="asl-div1.html">
+        <div class="league-left"><div class="league-num">1ª</div><div><div class="league-name">1ª Divisão</div><div class="league-sub">Campeonato 2025/2026</div></div></div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+      <a class="league-card asl-std" href="asl-div2a.html">
+        <div class="league-left"><div class="league-num">2A</div><div><div class="league-name">2ª Divisão A</div><div class="league-sub">Série A 2025/2026</div></div></div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+      <a class="league-card asl-std" href="asl-div2b.html">
+        <div class="league-left"><div class="league-num">2B</div><div><div class="league-name">2ª Divisão B</div><div class="league-sub">Série B 2025/2026</div></div></div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+      <a class="league-card asl-fem" href="asl-div1f.html">
+        <div class="league-left"><div class="league-num">1F</div><div><div class="league-name">1ª Div. Feminina</div><div class="league-sub">Campeonato 2025/2026</div></div></div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
+<footer class="site-footer">
+  <span>Portal 180 · Classificações de Setas em Portugal</span>
+  <a href="index.html">Início →</a>
+</footer>
+</body>
+</html>
