@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sobre Nós · Portal 180</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0D0F12;--bg2:#13161B;--bg3:#1A1E26;--line:#252A35;--line2:#2E3440;--ink:#F0F2F5;--ink2:#B8C0CC;--ink3:#7A8494;--red:#E8192C;--radius:10px;--max-w:1200px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:var(--red);}
+.page-hero{background:linear-gradient(135deg,var(--bg2) 0%,var(--bg) 100%);border-bottom:1px solid var(--line);padding:28px 24px;position:relative;overflow:hidden;}
+.page-hero::before{content:"";position:absolute;top:-80px;right:-80px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(232,25,44,.08) 0%,transparent 70%);pointer-events:none;}
+.page-hero-inner{max-width:var(--max-w);margin:0 auto;}
+.page-hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:34px;text-transform:uppercase;letter-spacing:.01em;}
+.page-hero h1 span{color:var(--red);}
+.page-hero p{font-size:13px;color:var(--ink3);margin-top:5px;}
+.wrap{max-width:760px;margin:0 auto;padding:40px 24px 70px;}
+.content{font-size:15px;line-height:1.85;color:var(--ink2);}
+.content h2{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:26px;color:var(--ink);margin:32px 0 12px;display:flex;align-items:center;gap:8px;}
+.content h2::before{content:"";width:3px;height:22px;background:var(--red);border-radius:2px;}
+.content p{margin-bottom:16px;}
+.content strong{color:var(--ink);font-weight:700;}
+.highlight-box{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:24px;margin:28px 0;border-left:3px solid var(--red);}
+.highlight-box p{margin:0;font-size:16px;font-style:italic;color:var(--ink);}
+.site-footer{max-width:var(--max-w);margin:0 auto;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--ink3);border-top:1px solid var(--line);}
+.site-footer a{color:var(--ink3);}
+@media(max-width:600px){.wrap{padding:24px 16px 50px;}.page-hero{padding:20px 16px;}}
+</style>
+</head>
+<body>
+<script src="nav.js"></script>
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <h1>Sobre <span>Nós</span></h1>
+    <p>Conheça o Portal 180 e a nossa missão</p>
+  </div>
+</div>
+<div class="wrap">
+  <div class="content">
+    <div class="highlight-box">
+      <p>"O Portal 180 nasceu da paixão pelas setas e da vontade de criar um espaço de referência para a comunidade portuguesa de darts."</p>
+    </div>
+    <h2>O que é o Portal 180</h2>
+    <p>O <strong>Portal 180</strong> é um portal de notícias e informação dedicado ao mundo das setas em Portugal. O nosso objetivo é ser a referência online para todos os apaixonados por darts — desde os jogadores amadores até aos profissionais, passando pelos adeptos e dirigentes associativos.</p>
+    <p>Cobrimos as principais ligas nacionais, as associações regionais, os torneios internacionais e tudo o que se passa no mundo das setas.</p>
+    <h2>O que encontras aqui</h2>
+    <p><strong>Notícias</strong> — Cobertura dos principais acontecimentos do darts nacional e internacional, escritas com rigor e paixão pelo desporto.</p>
+    <p><strong>Classificações</strong> — Tabelas classificativas em tempo real das ligas da ASZO, ASL e outras associações portuguesas.</p>
+    <p><strong>Vídeos</strong> — Os melhores momentos, entrevistas e highlights do mundo das setas.</p>
+    <h2>Contacto</h2>
+    <p>Para sugestões, correções ou colaborações, podes contactar-nos através da <a href="contactos.html">página de contactos</a>.</p>
+  </div>
+</div>
+<footer class="site-footer">
+  <span>© 2025/2026 Portal 180. Todos os direitos reservados.</span>
+  <a href="index.html">Início →</a>
+</footer>
+</body>
+</html>

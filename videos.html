@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vídeos · Portal 180</title>
+<meta name="description" content="Vídeos sobre setas em Portugal — entrevistas, highlights e muito mais.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0D0F12;--bg2:#13161B;--bg3:#1A1E26;--line:#252A35;--line2:#2E3440;--ink:#F0F2F5;--ink2:#B8C0CC;--ink3:#7A8494;--red:#E8192C;--radius:10px;--shadow:0 2px 8px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);--max-w:1200px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+.page-hero{background:linear-gradient(135deg,var(--bg2) 0%,var(--bg) 100%);border-bottom:1px solid var(--line);padding:28px 24px;position:relative;overflow:hidden;}
+.page-hero::before{content:"";position:absolute;top:-80px;right:-80px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(232,25,44,.08) 0%,transparent 70%);pointer-events:none;}
+.page-hero-inner{max-width:var(--max-w);margin:0 auto;}
+.page-hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:34px;text-transform:uppercase;letter-spacing:.01em;}
+.page-hero h1 span{color:var(--red);}
+.page-hero p{font-size:13px;color:var(--ink3);margin-top:5px;}
+.wrap{max-width:var(--max-w);margin:0 auto;padding:32px 20px 60px;}
+
+/* ADD VIDEO FORM */
+.add-video{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:28px;display:none;}
+.add-video.visible{display:block;}
+.add-video h2{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;text-transform:uppercase;margin-bottom:14px;}
+.add-row{display:flex;gap:10px;flex-wrap:wrap;}
+.add-input{flex:1;min-width:200px;background:var(--bg3);border:1px solid var(--line);border-radius:8px;padding:10px 14px;color:var(--ink);font-size:13px;font-family:inherit;}
+.add-input:focus{outline:none;border-color:var(--red);}
+.add-btn{padding:10px 18px;background:var(--red);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.add-btn:hover{background:#C01020;}
+
+/* VIDEOS GRID */
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;text-transform:uppercase;letter-spacing:.02em;display:flex;align-items:center;gap:8px;}
+.section-title::before{content:"";width:3px;height:18px;background:var(--red);border-radius:2px;}
+.admin-toggle{font-size:12px;font-weight:600;color:var(--ink3);background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:5px 10px;cursor:pointer;font-family:inherit;transition:all .15s;}
+.admin-toggle:hover{color:var(--ink);border-color:var(--line2);}
+
+.videos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+@media(max-width:860px){.videos-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:520px){.videos-grid{grid-template-columns:1fr;}}
+
+.video-card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);}
+.video-thumb{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;}
+.video-thumb iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}
+.video-body{padding:14px;}
+.video-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;line-height:1.2;margin-bottom:6px;color:var(--ink);}
+.video-meta{font-size:12px;color:var(--ink3);}
+.video-delete{display:none;margin-top:10px;padding:6px 10px;background:transparent;border:1px solid rgba(232,25,44,.3);border-radius:6px;color:var(--red);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;width:100%;}
+.admin-mode .video-delete{display:block;}
+
+.empty-state{text-align:center;padding:60px 24px;color:var(--ink3);}
+.empty-state svg{width:48px;height:48px;margin:0 auto 14px;opacity:.15;}
+.empty-state h3{font-size:18px;font-weight:600;margin-bottom:6px;color:var(--ink2);}
+.empty-state p{font-size:13px;}
+
+.site-footer{max-width:var(--max-w);margin:24px auto 0;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--ink3);border-top:1px solid var(--line);}
+.site-footer a{color:var(--ink3);}
+@media(max-width:680px){.wrap{padding:16px 12px 40px;}.page-hero{padding:20px 16px;}}
+</style>
+</head>
+<body>
+<script src="nav.js"></script>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <h1>Vídeos de <span>Setas</span></h1>
+    <p>Entrevistas, highlights, tutoriais e os melhores momentos do mundo das setas</p>
+  </div>
+</div>
+
+<div class="wrap" id="main-wrap">
+  <div class="section-head">
+    <h2 class="section-title">Todos os Vídeos</h2>
+    <button class="admin-toggle" id="admin-toggle-btn" onclick="toggleAdminMode()">+ Adicionar vídeo</button>
+  </div>
+
+  <div class="add-video" id="add-video-form">
+    <h2>Adicionar Vídeo do YouTube</h2>
+    <div class="add-row">
+      <input class="add-input" type="text" id="yt-url" placeholder="URL do YouTube (ex: https://youtube.com/watch?v=...)">
+      <input class="add-input" type="text" id="yt-title" placeholder="Título do vídeo" style="max-width:260px;">
+      <button class="add-btn" onclick="addVideo()">Adicionar</button>
+    </div>
+  </div>
+
+  <div class="videos-grid" id="videos-grid">
+    <div class="empty-state" style="grid-column:1/-1;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+      <h3>Em breve</h3>
+      <p>Os primeiros vídeos serão adicionados em breve.</p>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <span>Portal 180 · Vídeos de Setas</span>
+  <a href="index.html">Início →</a>
+</footer>
+
+<script>
+var videos = JSON.parse(localStorage.getItem('p180_videos') || '[]');
+var adminMode = false;
+
+function getYTId(url) {
+  var m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
+  return m ? m[1] : null;
+}
+
+function renderVideos() {
+  var grid = document.getElementById('videos-grid');
+  if(!videos.length) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">'
+      +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>'
+      +'<h3>Em breve</h3><p>Os primeiros vídeos serão adicionados em breve.</p></div>';
+    return;
+  }
+  grid.innerHTML = videos.map(function(v, i) {
+    return '<div class="video-card">'
+      +'<div class="video-thumb"><iframe src="https://www.youtube.com/embed/'+v.id+'" allowfullscreen loading="lazy"></iframe></div>'
+      +'<div class="video-body">'
+        +'<div class="video-title">'+v.title+'</div>'
+        +'<div class="video-meta">'+v.date+'</div>'
+        +'<button class="video-delete" onclick="deleteVideo('+i+')">Remover vídeo</button>'
+      +'</div>'
+    +'</div>';
+  }).join('');
+}
+
+function addVideo() {
+  var url = document.getElementById('yt-url').value.trim();
+  var title = document.getElementById('yt-title').value.trim() || 'Vídeo sem título';
+  var id = getYTId(url);
+  if(!id) { alert('URL do YouTube inválido. Exemplo: https://youtube.com/watch?v=abc123'); return; }
+  var date = new Date().toLocaleDateString('pt-PT', {day:'numeric',month:'long',year:'numeric'});
+  videos.unshift({id:id, title:title, date:date});
+  localStorage.setItem('p180_videos', JSON.stringify(videos));
+  document.getElementById('yt-url').value = '';
+  document.getElementById('yt-title').value = '';
+  renderVideos();
+}
+
+function deleteVideo(i) {
+  if(!confirm('Remover este vídeo?')) return;
+  videos.splice(i, 1);
+  localStorage.setItem('p180_videos', JSON.stringify(videos));
+  renderVideos();
+}
+
+function toggleAdminMode() {
+  adminMode = !adminMode;
+  document.getElementById('add-video-form').classList.toggle('visible', adminMode);
+  document.getElementById('main-wrap').classList.toggle('admin-mode', adminMode);
+  document.getElementById('admin-toggle-btn').textContent = adminMode ? '✕ Fechar' : '+ Adicionar vídeo';
+}
+
+renderVideos();
+</script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contactos · Portal 180</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0D0F12;--bg2:#13161B;--bg3:#1A1E26;--line:#252A35;--line2:#2E3440;--ink:#F0F2F5;--ink2:#B8C0CC;--ink3:#7A8494;--red:#E8192C;--radius:10px;--shadow:0 2px 8px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);--max-w:1200px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:var(--red);}
+.page-hero{background:linear-gradient(135deg,var(--bg2) 0%,var(--bg) 100%);border-bottom:1px solid var(--line);padding:28px 24px;position:relative;overflow:hidden;}
+.page-hero::before{content:"";position:absolute;top:-80px;right:-80px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(232,25,44,.08) 0%,transparent 70%);pointer-events:none;}
+.page-hero-inner{max-width:var(--max-w);margin:0 auto;}
+.page-hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:34px;text-transform:uppercase;letter-spacing:.01em;}
+.page-hero h1 span{color:var(--red);}
+.page-hero p{font-size:13px;color:var(--ink3);margin-top:5px;}
+.wrap{max-width:680px;margin:0 auto;padding:40px 24px 70px;}
+.form-group{margin-bottom:16px;}
+.form-label{display:block;font-size:12px;font-weight:600;color:var(--ink3);margin-bottom:7px;letter-spacing:.04em;text-transform:uppercase;}
+.form-input{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:11px 14px;color:var(--ink);font-size:14px;font-family:'Inter',sans-serif;transition:border-color .15s;}
+.form-input:focus{outline:none;border-color:var(--red);}
+textarea.form-input{resize:vertical;min-height:140px;}
+.submit-btn{width:100%;padding:12px;background:var(--red);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s;margin-top:4px;}
+.submit-btn:hover{background:#C01020;}
+.success-msg{display:none;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:16px;text-align:center;color:#4ade80;font-weight:600;margin-top:16px;}
+.contact-info{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:28px;display:flex;gap:20px;flex-wrap:wrap;}
+.contact-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink2);}
+.contact-item svg{width:16px;height:16px;color:var(--red);flex-shrink:0;}
+.site-footer{max-width:var(--max-w);margin:0 auto;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--ink3);border-top:1px solid var(--line);}
+.site-footer a{color:var(--ink3);}
+@media(max-width:600px){.wrap{padding:24px 16px 50px;}.page-hero{padding:20px 16px;}}
+</style>
+</head>
+<body>
+<script src="nav.js"></script>
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <h1>Fala <span>Connosco</span></h1>
+    <p>Sugestões, correções, colaborações ou apenas dizer olá</p>
+  </div>
+</div>
+<div class="wrap">
+  <div class="contact-info">
+    <div class="contact-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <span>Em breve</span>
+    </div>
+    <div class="contact-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2H3v16h5l3 3 3-3h7z"/></svg>
+      <span>Redes sociais em breve</span>
+    </div>
+  </div>
+
+  <form id="contact-form">
+    <div class="form-group">
+      <label class="form-label">Nome</label>
+      <input class="form-input" type="text" id="f-nome" placeholder="O teu nome" required>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input class="form-input" type="email" id="f-email" placeholder="o-teu@email.com" required>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Assunto</label>
+      <input class="form-input" type="text" id="f-assunto" placeholder="Ex: Sugestão, Correção, Colaboração...">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Mensagem</label>
+      <textarea class="form-input" id="f-mensagem" placeholder="Escreve a tua mensagem aqui..." required></textarea>
+    </div>
+    <button class="submit-btn" type="submit">Enviar Mensagem</button>
+    <div class="success-msg" id="success-msg">
+      ✓ Mensagem enviada! Responderemos em breve.
+    </div>
+  </form>
+</div>
+<footer class="site-footer">
+  <span>© 2025/2026 Portal 180. Todos os direitos reservados.</span>
+  <a href="index.html">Início →</a>
+</footer>
+<script>
+document.getElementById('contact-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  // For now just show success message
+  // Later can integrate with Supabase or email service
+  document.getElementById('success-msg').style.display = 'block';
+  this.reset();
+  setTimeout(function() {
+    document.getElementById('success-msg').style.display = 'none';
+  }, 5000);
+});
+</script>
+</body>
+</html>
